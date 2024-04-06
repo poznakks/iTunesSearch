@@ -15,6 +15,9 @@
 		21FC76052BC0B5110096989A /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC76042BC0B5110096989A /* Media.swift */; };
 		21FC76072BC0B77F0096989A /* SearchResultsCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC76062BC0B77F0096989A /* SearchResultsCollectionView.swift */; };
 		21FC76092BC0B9650096989A /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC76082BC0B9650096989A /* SearchResultCell.swift */; };
+		21FC760B2BC1CB3F0096989A /* SearchTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC760A2BC1CB3F0096989A /* SearchTextField.swift */; };
+		21FC760E2BC1D24B0096989A /* UIFont+systemFontWithDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC760D2BC1D24B0096989A /* UIFont+systemFontWithDesign.swift */; };
+		21FC76102BC1D2640096989A /* UIImage+systemImageWithColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC760F2BC1D2640096989A /* UIImage+systemImageWithColor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +31,9 @@
 		21FC76042BC0B5110096989A /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		21FC76062BC0B77F0096989A /* SearchResultsCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsCollectionView.swift; sourceTree = "<group>"; };
 		21FC76082BC0B9650096989A /* SearchResultCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
+		21FC760A2BC1CB3F0096989A /* SearchTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextField.swift; sourceTree = "<group>"; };
+		21FC760D2BC1D24B0096989A /* UIFont+systemFontWithDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+systemFontWithDesign.swift"; sourceTree = "<group>"; };
+		21FC760F2BC1D2640096989A /* UIImage+systemImageWithColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+systemImageWithColor.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +66,7 @@
 		21FC75EB2BC0A2560096989A /* iTunesSearch */ = {
 			isa = PBXGroup;
 			children = (
+				21FC760C2BC1D2340096989A /* Extensions */,
 				21FC75F02BC0A2560096989A /* ViewController.swift */,
 				21FC76032BC0A5800096989A /* Models */,
 				21FC76012BC0A4900096989A /* App */,
@@ -67,6 +74,7 @@
 				21FC76042BC0B5110096989A /* Media.swift */,
 				21FC76062BC0B77F0096989A /* SearchResultsCollectionView.swift */,
 				21FC76082BC0B9650096989A /* SearchResultCell.swift */,
+				21FC760A2BC1CB3F0096989A /* SearchTextField.swift */,
 			);
 			path = iTunesSearch;
 			sourceTree = "<group>";
@@ -95,6 +103,15 @@
 			children = (
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		21FC760C2BC1D2340096989A /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				21FC760D2BC1D24B0096989A /* UIFont+systemFontWithDesign.swift */,
+				21FC760F2BC1D2640096989A /* UIImage+systemImageWithColor.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -193,8 +210,11 @@
 			files = (
 				21FC75F12BC0A2560096989A /* ViewController.swift in Sources */,
 				21FC76072BC0B77F0096989A /* SearchResultsCollectionView.swift in Sources */,
+				21FC76102BC1D2640096989A /* UIImage+systemImageWithColor.swift in Sources */,
+				21FC760E2BC1D24B0096989A /* UIFont+systemFontWithDesign.swift in Sources */,
 				21FC75ED2BC0A2560096989A /* AppDelegate.swift in Sources */,
 				21FC76052BC0B5110096989A /* Media.swift in Sources */,
+				21FC760B2BC1CB3F0096989A /* SearchTextField.swift in Sources */,
 				21FC76092BC0B9650096989A /* SearchResultCell.swift in Sources */,
 				21FC75EF2BC0A2560096989A /* SceneDelegate.swift in Sources */,
 			);

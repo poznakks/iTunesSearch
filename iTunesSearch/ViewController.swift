@@ -9,6 +9,7 @@ import UIKit
 
 final class ViewController: UIViewController {
 
+    private lazy var searchTextField = SearchTextField()
     private lazy var searchResultsCollectionView = SearchResultsCollectionView()
 
     override func viewDidLoad() {
@@ -35,9 +36,17 @@ final class ViewController: UIViewController {
     }
 
     private func setupConstraints() {
+        view.addSubview(searchTextField)
+        NSLayoutConstraint.activate([
+            searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            searchTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            searchTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            searchTextField.heightAnchor.constraint(equalToConstant: 40)
+        ])
+
         view.addSubview(searchResultsCollectionView)
         NSLayoutConstraint.activate([
-            searchResultsCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            searchResultsCollectionView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 16),
             searchResultsCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             searchResultsCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             searchResultsCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
