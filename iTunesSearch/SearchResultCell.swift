@@ -16,7 +16,7 @@ final class SearchResultCell: UICollectionViewCell {
         imageView.contentMode = .scaleAspectFit
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 8
-        imageView.backgroundColor = .lightGray
+        imageView.backgroundColor = .systemGray4
         imageView.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(imageView)
         return imageView
@@ -26,7 +26,39 @@ final class SearchResultCell: UICollectionViewCell {
         let label = UILabel()
         label.text = "Title"
         label.textAlignment = .left
-        label.numberOfLines = 0
+        label.numberOfLines = 2
+        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(label)
+        return label
+    }()
+
+    private lazy var artistLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .systemGray
+        label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 16, weight: .semibold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(label)
+        return label
+    }()
+
+    private lazy var typeLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .systemGray
+        label.font = .systemFont(ofSize: 13)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(label)
+        return label
+    }()
+
+    private lazy var durationLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.textColor = .systemGray
+        label.font = .systemFont(ofSize: 13)
         label.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(label)
         return label
@@ -37,6 +69,7 @@ final class SearchResultCell: UICollectionViewCell {
         label.text = "$19.99"
         label.textAlignment = .left
         label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 16, weight: .bold)
         label.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(label)
         return label
@@ -63,8 +96,12 @@ final class SearchResultCell: UICollectionViewCell {
     // swiftlint:disable force_try
     func configure(with media: Media) {
         titleLabel.text = media.trackName
+        artistLabel.text = media.artistName
+        typeLabel.text = media.kind.toString
+        durationLabel.text = media.trackDurationString
+
         if let trackPrice = media.trackPrice {
-            priceLabel.text = "$\(trackPrice)"
+            priceLabel.text = "\(trackPrice) \(media.currency)"
         } else {
             priceLabel.text = "Price not specified"
         }
@@ -78,8 +115,18 @@ final class SearchResultCell: UICollectionViewCell {
 
     private func setupConstraints() {
         let stack: UIStackView = {
-            let stack = UIStackView(arrangedSubviews: [imageView, titleLabel, priceLabel])
+            let stack = UIStackView(
+                arrangedSubviews: [
+                    imageView,
+                    titleLabel,
+                    artistLabel,
+                    typeLabel,
+                    durationLabel,
+                    priceLabel
+                ]
+            )
             stack.axis = .vertical
+            stack.distribution = .equalSpacing
             stack.translatesAutoresizingMaskIntoConstraints = false
             addSubview(stack)
             return stack

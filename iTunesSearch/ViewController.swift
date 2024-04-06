@@ -18,7 +18,7 @@ final class ViewController: UIViewController {
 
         // swiftlint:disable force_try
         Task {
-            let url = URL(string: "https://itunes.apple.com/search?entity=song&term=21+Savage")!
+            let url = URL(string: "https://itunes.apple.com/search?entity=movie&term=pirates")!
             let (data, _) = try! await URLSession.shared.data(from: url)
 
             let dateFormatter = DateFormatter()

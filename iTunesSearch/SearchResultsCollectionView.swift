@@ -72,7 +72,7 @@ extension SearchResultsCollectionView: UICollectionViewDelegateFlowLayout {
         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
         let width = Constants.cellWidth(frameWidth: frame.width)
-        return CGSize(width: width, height: width * 2)
+        return CGSize(width: width, height: width * 1.8)
     }
 
     func collectionView(
