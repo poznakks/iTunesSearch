@@ -9,6 +9,10 @@ import UIKit
 
 final class SearchTextField: UITextField {
 
+    var onStartEditing: (() -> Void)?
+    var onTextUpdate: ((String) -> Void)?
+    var onReturn: ((String) -> Void)?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setup()
@@ -78,7 +82,25 @@ final class SearchTextField: UITextField {
 }
 
 extension SearchTextField: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        resignFirstResponder()
+        onReturn?(text ?? "")
+        return true
+    }
 
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        onStartEditing?()
+    }
+
+    func textField(
+        _ textField: UITextField,
+        shouldChangeCharactersIn range: NSRange,
+        replacementString string: String
+    ) -> Bool {
+        let searchText = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) ?? ""
+        onTextUpdate?(searchText)
+        return true
+    }
 }
 
 private enum Constants {
