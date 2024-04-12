@@ -42,6 +42,12 @@ final class MainViewController: UIViewController {
             searchSuggestionsTableView.isHidden = true
         }
 
+        searchTextField.presentFilters = { [weak self] in
+            guard let self else { return }
+            let filterViewController = FilterViewController()
+            self.present(filterViewController, animated: true)
+        }
+
         searchSuggestionsTableView.onCellTapHandler = { [weak self] suggestion in
             guard let self else { return }
             self.performSearch(query: suggestion)
@@ -100,8 +106,7 @@ final class MainViewController: UIViewController {
 
 private extension MainViewController {
     func getLastRequests() -> [String] {
-        let startIndex = max(0, previousRequests.count - 5)
-        return Array(previousRequests[startIndex..<previousRequests.count].reversed())
+        previousRequests.reversed()
     }
 
     func searchAmongPreviousRequests(for substring: String) -> [String] {
@@ -115,5 +120,8 @@ private extension MainViewController {
             previousRequests.remove(at: index)
         }
         previousRequests.append(request)
+        if previousRequests.count > 5 {
+            previousRequests.remove(at: 0)
+        }
     }
 }

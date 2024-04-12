@@ -7,6 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		211775AC2BC6EFCA004B6E23 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775AB2BC6EFCA004B6E23 /* FilterViewController.swift */; };
+		211775AE2BC83BCD004B6E23 /* SingleOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775AD2BC83BCD004B6E23 /* SingleOptionViewController.swift */; };
+		211775B02BC84F41004B6E23 /* ApplyFiltersButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775AF2BC84F40004B6E23 /* ApplyFiltersButton.swift */; };
+		211775B22BC857E6004B6E23 /* OptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775B12BC857E6004B6E23 /* OptionsTableViewCell.swift */; };
+		211775B42BC85962004B6E23 /* MultiOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775B32BC85962004B6E23 /* MultiOptionViewController.swift */; };
+		211775B62BC922F8004B6E23 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775B52BC922F8004B6E23 /* Entity.swift */; };
+		211775B82BC92319004B6E23 /* Country.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775B72BC92319004B6E23 /* Country.swift */; };
+		211775BA2BC92336004B6E23 /* FIlterOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775B92BC92336004B6E23 /* FIlterOptions.swift */; };
 		219031E22BC6BABC001D141E /* SearchSuggestionsTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219031E12BC6BABC001D141E /* SearchSuggestionsTableView.swift */; };
 		21FC75ED2BC0A2560096989A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75EC2BC0A2560096989A /* AppDelegate.swift */; };
 		21FC75EF2BC0A2560096989A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75EE2BC0A2560096989A /* SceneDelegate.swift */; };
@@ -22,6 +30,14 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		211775AB2BC6EFCA004B6E23 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		211775AD2BC83BCD004B6E23 /* SingleOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleOptionViewController.swift; sourceTree = "<group>"; };
+		211775AF2BC84F40004B6E23 /* ApplyFiltersButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyFiltersButton.swift; sourceTree = "<group>"; };
+		211775B12BC857E6004B6E23 /* OptionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTableViewCell.swift; sourceTree = "<group>"; };
+		211775B32BC85962004B6E23 /* MultiOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiOptionViewController.swift; sourceTree = "<group>"; };
+		211775B52BC922F8004B6E23 /* Entity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		211775B72BC92319004B6E23 /* Country.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Country.swift; sourceTree = "<group>"; };
+		211775B92BC92336004B6E23 /* FIlterOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FIlterOptions.swift; sourceTree = "<group>"; };
 		219031E12BC6BABC001D141E /* SearchSuggestionsTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSuggestionsTableView.swift; sourceTree = "<group>"; };
 		21FC75E92BC0A2560096989A /* iTunesSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTunesSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21FC75EC2BC0A2560096989A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -53,7 +69,10 @@
 			isa = PBXGroup;
 			children = (
 				21FC75F02BC0A2560096989A /* MainViewController.swift */,
+				211775AB2BC6EFCA004B6E23 /* FilterViewController.swift */,
+				211775AD2BC83BCD004B6E23 /* SingleOptionViewController.swift */,
 				219031E42BC6D2DE001D141E /* ChildViews */,
+				211775B32BC85962004B6E23 /* MultiOptionViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -65,6 +84,8 @@
 				21FC76082BC0B9650096989A /* SearchResultCell.swift */,
 				21FC760A2BC1CB3F0096989A /* SearchTextField.swift */,
 				219031E12BC6BABC001D141E /* SearchSuggestionsTableView.swift */,
+				211775AF2BC84F40004B6E23 /* ApplyFiltersButton.swift */,
+				211775B12BC857E6004B6E23 /* OptionsTableViewCell.swift */,
 			);
 			path = ChildViews;
 			sourceTree = "<group>";
@@ -120,6 +141,9 @@
 			isa = PBXGroup;
 			children = (
 				21FC76042BC0B5110096989A /* Media.swift */,
+				211775B52BC922F8004B6E23 /* Entity.swift */,
+				211775B72BC92319004B6E23 /* Country.swift */,
+				211775B92BC92336004B6E23 /* FIlterOptions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -231,11 +255,19 @@
 				21FC76072BC0B77F0096989A /* SearchResultsCollectionView.swift in Sources */,
 				21FC76102BC1D2640096989A /* UIImage+systemImageWithColor.swift in Sources */,
 				21FC760E2BC1D24B0096989A /* UIFont+systemFontWithDesign.swift in Sources */,
+				211775B62BC922F8004B6E23 /* Entity.swift in Sources */,
+				211775B22BC857E6004B6E23 /* OptionsTableViewCell.swift in Sources */,
 				21FC75ED2BC0A2560096989A /* AppDelegate.swift in Sources */,
+				211775AC2BC6EFCA004B6E23 /* FilterViewController.swift in Sources */,
+				211775AE2BC83BCD004B6E23 /* SingleOptionViewController.swift in Sources */,
+				211775B82BC92319004B6E23 /* Country.swift in Sources */,
 				21FC76052BC0B5110096989A /* Media.swift in Sources */,
 				219031E22BC6BABC001D141E /* SearchSuggestionsTableView.swift in Sources */,
+				211775B02BC84F41004B6E23 /* ApplyFiltersButton.swift in Sources */,
 				21FC760B2BC1CB3F0096989A /* SearchTextField.swift in Sources */,
+				211775B42BC85962004B6E23 /* MultiOptionViewController.swift in Sources */,
 				21FC76092BC0B9650096989A /* SearchResultCell.swift in Sources */,
+				211775BA2BC92336004B6E23 /* FIlterOptions.swift in Sources */,
 				21FC75EF2BC0A2560096989A /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
