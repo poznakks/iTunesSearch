@@ -7,12 +7,13 @@
 
 import UIKit
 
-final class MultiOptionViewController: UIViewController {
+final class MultiOptionViewController<T: SelectableOption>:
+    UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var didSelectOptions: (([String]) -> Void)?
+    var didSelectOptions: (([T]) -> Void)?
 
-    private let options: [String]
-    private var selectedIndexes: Set<Int> = []
+    private let options: [T]
+    private var selected: Set<T>
 
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
@@ -31,8 +32,9 @@ final class MultiOptionViewController: UIViewController {
         return button
     }()
 
-    init(options: [String]) {
+    init(options: [T], selected: [T]) {
         self.options = options
+        self.selected = Set(selected)
         super.init(nibName: nil, bundle: nil)
         setupConstraints()
     }
@@ -63,15 +65,12 @@ final class MultiOptionViewController: UIViewController {
 
     @objc
     private func didTapApplyFilters() {
-        let selectedOptions = options.enumerated()
-            .filter { selectedIndexes.contains($0.offset) }
-            .map { $0.element }
+        let selectedOptions = options.filter { selected.contains($0) }
         didSelectOptions?(selectedOptions)
         dismiss(animated: true, completion: nil)
     }
-}
 
-extension MultiOptionViewController: UITableViewDataSource {
+    // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         options.count
     }
@@ -84,14 +83,13 @@ extension MultiOptionViewController: UITableViewDataSource {
 
         let option = options[indexPath.row]
         cell.type = .multi
-        cell.text = option
-        cell.isChosen = selectedIndexes.contains(indexPath.row)
+        cell.text = option.toString
+        cell.isChosen = selected.contains(option)
 
         return cell
     }
-}
 
-extension MultiOptionViewController: UITableViewDelegate {
+    // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let cell = tableView.cellForRow(
             at: indexPath
@@ -99,10 +97,10 @@ extension MultiOptionViewController: UITableViewDelegate {
 
         if cell.isChosen {
             cell.isChosen = false
-            selectedIndexes.remove(indexPath.row)
+            selected.remove(options[indexPath.row])
         } else {
             cell.isChosen = true
-            selectedIndexes.insert(indexPath.row)
+            selected.insert(options[indexPath.row])
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

@@ -7,11 +7,12 @@
 
 import UIKit
 
-final class SingleOptionViewController: UIViewController {
+final class SingleOptionViewController<T: SelectableOption>:
+    UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    var didSelectOption: ((String) -> Void)?
+    var didSelectOption: ((T) -> Void)?
 
-    private let options: [String]
+    private let options: [T]
     private var selectedIndex: Int
 
     private lazy var tableView: UITableView = {
@@ -31,9 +32,9 @@ final class SingleOptionViewController: UIViewController {
         return button
     }()
 
-    init(options: [String]) {
+    init(options: [T], selected: T) {
         self.options = options
-        self.selectedIndex = 0
+        self.selectedIndex = options.firstIndex(of: selected) ?? 0
         super.init(nibName: nil, bundle: nil)
         setupConstraints()
     }
@@ -67,9 +68,8 @@ final class SingleOptionViewController: UIViewController {
         didSelectOption?(options[selectedIndex])
         dismiss(animated: true, completion: nil)
     }
-}
 
-extension SingleOptionViewController: UITableViewDataSource {
+    // MARK: - UITableViewDataSource
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         options.count
     }
@@ -82,14 +82,13 @@ extension SingleOptionViewController: UITableViewDataSource {
 
         let option = options[indexPath.row]
         cell.type = .single
-        cell.text = option
+        cell.text = option.toString
         cell.isChosen = indexPath.row == selectedIndex
 
         return cell
     }
-}
 
-extension SingleOptionViewController: UITableViewDelegate {
+    // MARK: - UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let previousIndexPath = IndexPath(row: selectedIndex, section: 0)
         guard let previousCell = tableView.cellForRow(

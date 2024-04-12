@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Country: String, CaseIterable {
+enum Country: String, SelectableOption {
     case us = "us"
     case uk = "uk"
     case russia = "ru"

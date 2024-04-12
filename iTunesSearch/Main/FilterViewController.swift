@@ -43,7 +43,7 @@ final class FilterViewController: UIViewController {
         var config = UIButton.Configuration.filled()
         config.baseBackgroundColor = .systemGray5
         config.baseForegroundColor = .black
-        config.title = "Any"
+        config.title = selectedMediaTypes.map { $0.toString }.joined(separator: ", ")
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapMediaTypeButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -78,7 +78,7 @@ final class FilterViewController: UIViewController {
         var config = UIButton.Configuration.filled()
         config.baseBackgroundColor = .systemGray5
         config.baseForegroundColor = .black
-        config.title = "Any"
+        config.title = selectedEntities.map { $0.toString }.joined(separator: ", ")
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapEntityButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -98,7 +98,7 @@ final class FilterViewController: UIViewController {
         var config = UIButton.Configuration.filled()
         config.baseBackgroundColor = .systemGray5
         config.baseForegroundColor = .black
-        config.title = "US"
+        config.title = selectedCountry.toString
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapCountryButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -167,27 +167,39 @@ final class FilterViewController: UIViewController {
 private extension FilterViewController {
     @objc
     private func didTapMediaTypeButton() {
-        let vc = MultiOptionViewController(options: MediaType.allCases.map { $0.toString })
+        let vc = MultiOptionViewController(
+            options: MediaType.allCases,
+            selected: selectedMediaTypes
+        )
         vc.didSelectOptions = { [weak self] selectedOptions in
-            self?.mediaTypeButton.configuration?.title = selectedOptions.joined(separator: ", ")
+            self?.selectedMediaTypes = selectedOptions
+            self?.mediaTypeButton.configuration?.title = selectedOptions.map { $0.toString }.joined(separator: ", ")
         }
         present(vc, animated: true)
     }
 
     @objc
     private func didTapEntityButton() {
-        let vc = MultiOptionViewController(options: Entity.allCases.map { $0.rawValue })
+        let vc = MultiOptionViewController(
+            options: Entity.allCases,
+            selected: selectedEntities
+        )
         vc.didSelectOptions = { [weak self] selectedOptions in
-            self?.entityButton.configuration?.title = selectedOptions.joined(separator: ", ")
+            self?.selectedEntities = selectedOptions
+            self?.entityButton.configuration?.title = selectedOptions.map { $0.toString }.joined(separator: ", ")
         }
         present(vc, animated: true)
     }
 
     @objc
     private func didTapCountryButton() {
-        let vc = SingleOptionViewController(options: Country.allCases.map { $0.toString })
+        let vc = SingleOptionViewController(
+            options: Country.allCases,
+            selected: selectedCountry
+        )
         vc.didSelectOption = { [weak self] selectedOption in
-            self?.countryButton.configuration?.title = selectedOption
+            self?.selectedCountry = selectedOption
+            self?.countryButton.configuration?.title = selectedOption.toString
         }
         present(vc, animated: true)
     }
