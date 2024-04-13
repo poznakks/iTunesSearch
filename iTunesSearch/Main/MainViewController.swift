@@ -6,14 +6,12 @@
 //
 
 import UIKit
+import Combine
 
 final class MainViewController: UIViewController {
 
-    private var query: String = ""
-    private var filters: Filters = .standard
-    private var previousRequests: [String] = []
-
-    private let mediaService: MediaService = MediaServiceImpl()
+    private let viewModel = MainViewModel()
+    private var cancellables: Set<AnyCancellable> = []
 
     private lazy var searchTextField = SearchTextField()
     private lazy var searchSuggestionsTableView = SearchSuggestionsTableView()
@@ -27,44 +25,53 @@ final class MainViewController: UIViewController {
 
         searchTextField.onStartEditing = { [weak self] in
             guard let self else { return }
-            let lastRequests = self.getLastRequests()
-            searchSuggestionsTableView.setResults(lastRequests)
-            searchSuggestionsTableView.isHidden = false
+            self.viewModel.getLastRequests()
+            self.searchSuggestionsTableView.isHidden = false
         }
 
         searchTextField.onTextUpdate = { [weak self] text in
             guard let self else { return }
-            let previousRequests = self.searchAmongPreviousRequests(for: text)
-            searchSuggestionsTableView.setResults(previousRequests)
-            searchSuggestionsTableView.isHidden = false
+            self.viewModel.intermediateQuery = text
+            self.searchSuggestionsTableView.isHidden = false
         }
 
         searchTextField.onReturn = { [weak self] text in
             guard let self else { return }
-            self.query = text
-            self.performSearch(query: text)
-            self.addRequestToPrevious(text)
-            searchSuggestionsTableView.isHidden = true
+            self.viewModel.query = text
+            self.searchSuggestionsTableView.isHidden = true
         }
 
         searchTextField.showFilters = { [weak self] in
             guard let self else { return }
-            let filterViewController = FilterViewController(filters: filters)
+            let filterViewController = FilterViewController(filters: self.viewModel.filters)
             filterViewController.didSetFilters = { filters in
-                self.filters = filters
-                self.performSearch(query: self.query)
+                self.viewModel.filters = filters
+                self.searchSuggestionsTableView.isHidden = true
             }
             self.present(filterViewController, animated: true)
         }
 
         searchSuggestionsTableView.onCellTapHandler = { [weak self] suggestion in
             guard let self else { return }
-            self.performSearch(query: suggestion)
+            self.viewModel.query = suggestion
             self.searchTextField.text = suggestion
             self.searchTextField.resignFirstResponder()
-            self.addRequestToPrevious(suggestion)
-            searchSuggestionsTableView.isHidden = true
+            self.searchSuggestionsTableView.isHidden = true
         }
+
+        viewModel.$suggestions
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] suggestions in
+                self?.searchSuggestionsTableView.setResults(suggestions)
+            }
+            .store(in: &cancellables)
+
+        viewModel.$mediaResults
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] media in
+                self?.searchResultsCollectionView.setMedia(media)
+            }
+            .store(in: &cancellables)
     }
 
     private func setupConstraints() {
@@ -91,36 +98,5 @@ final class MainViewController: UIViewController {
             searchSuggestionsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             searchSuggestionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
-    }
-
-    private func performSearch(query: String) {
-        // swiftlint:disable force_try
-        Task {
-            let receivedMedia = try! await mediaService.media(query: query, filters: filters)
-            searchResultsCollectionView.setMedia(receivedMedia.results)
-        }
-        // swiftlint:enable force_try
-    }
-}
-
-private extension MainViewController {
-    func getLastRequests() -> [String] {
-        previousRequests.reversed()
-    }
-
-    func searchAmongPreviousRequests(for substring: String) -> [String] {
-        previousRequests
-            .filter { $0.range(of: substring, options: .caseInsensitive) != nil }
-            .reversed()
-    }
-
-    func addRequestToPrevious(_ request: String) {
-        if let index = previousRequests.firstIndex(of: request) {
-            previousRequests.remove(at: index)
-        }
-        previousRequests.append(request)
-        if previousRequests.count > 5 {
-            previousRequests.remove(at: 0)
-        }
     }
 }
