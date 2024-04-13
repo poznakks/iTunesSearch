@@ -71,9 +71,6 @@
 			isa = PBXGroup;
 			children = (
 				21FC75F02BC0A2560096989A /* MainViewController.swift */,
-				211775AB2BC6EFCA004B6E23 /* FilterViewController.swift */,
-				211775AD2BC83BCD004B6E23 /* SingleOptionViewController.swift */,
-				211775B32BC85962004B6E23 /* MultiOptionViewController.swift */,
 				219031E42BC6D2DE001D141E /* ChildViews */,
 			);
 			path = Main;
@@ -86,10 +83,20 @@
 				21FC76082BC0B9650096989A /* SearchResultCell.swift */,
 				21FC760A2BC1CB3F0096989A /* SearchTextField.swift */,
 				219031E12BC6BABC001D141E /* SearchSuggestionsTableView.swift */,
-				211775AF2BC84F40004B6E23 /* ApplyFiltersButton.swift */,
-				211775B12BC857E6004B6E23 /* OptionsTableViewCell.swift */,
 			);
 			path = ChildViews;
+			sourceTree = "<group>";
+		};
+		21B412E52BCB03F000730295 /* Filters */ = {
+			isa = PBXGroup;
+			children = (
+				211775AB2BC6EFCA004B6E23 /* FilterViewController.swift */,
+				211775AD2BC83BCD004B6E23 /* SingleOptionViewController.swift */,
+				211775B32BC85962004B6E23 /* MultiOptionViewController.swift */,
+				211775B12BC857E6004B6E23 /* OptionsTableViewCell.swift */,
+				211775AF2BC84F40004B6E23 /* ApplyFiltersButton.swift */,
+			);
+			path = Filters;
 			sourceTree = "<group>";
 		};
 		21FC75E02BC0A2560096989A = {
@@ -113,6 +120,7 @@
 			children = (
 				21FC76012BC0A4900096989A /* App */,
 				219031E32BC6D2C2001D141E /* Main */,
+				21B412E52BCB03F000730295 /* Filters */,
 				21FC76032BC0A5800096989A /* Models */,
 				21FC760C2BC1D2340096989A /* Extensions */,
 				21FC76022BC0A4A50096989A /* SupportingFiles */,
