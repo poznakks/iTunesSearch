@@ -17,8 +17,6 @@ final class RequestBuilderImpl: RequestBuilder {
             .appending(path: request.path)
             .appending(queryItems: request.queryItems)
 
-        print("built url: ", url)
-
         var request = URLRequest(url: url)
         request.httpMethod = request.httpMethod
         request.timeoutInterval = request.timeoutInterval

@@ -11,6 +11,8 @@ final class SearchResultCell: UICollectionViewCell {
 
     static let identifier = String(describing: SearchResultCell.self)
 
+    private let mediaService: MediaService = MediaServiceImpl()
+
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -108,9 +110,10 @@ final class SearchResultCell: UICollectionViewCell {
         }
         Task {
             guard let artworkUrl = media.artworkUrl100 else { return }
-            let (data, _) = try! await URLSession.shared.data(from: artworkUrl)
-            let image = UIImage(data: data)?.preparingForDisplay()
-            imageView.image = image
+            let artworkImage = try! await mediaService
+                .mediaImage(imageURL: artworkUrl)
+                .preparingForDisplay()
+            imageView.image = artworkImage
         }
     }
     // swiftlint:enable force_try

@@ -13,6 +13,8 @@ final class MainViewController: UIViewController {
     private var filters: Filters = .standard
     private var previousRequests: [String] = []
 
+    private let mediaService: MediaService = MediaServiceImpl()
+
     private lazy var searchTextField = SearchTextField()
     private lazy var searchSuggestionsTableView = SearchSuggestionsTableView()
     private lazy var searchResultsCollectionView = SearchResultsCollectionView()
@@ -92,27 +94,12 @@ final class MainViewController: UIViewController {
     }
 
     private func performSearch(query: String) {
-        // swiftlint:disable force_try force_unwrapping line_length
+        // swiftlint:disable force_try
         Task {
-            let entity = filters.entities.map { $0.rawValue }.joined(separator: ",")
-            let country = filters.country.rawValue
-            let limit = filters.limit
-            let string = "https://itunes.apple.com/search?term=\(query)&entity=\(entity)&country=\(country)&limit=\(limit)"
-            print(string)
-            let url = URL(string: string)!
-            let (data, _) = try! await URLSession.shared.data(from: url)
-
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-
-            let jsonDecoder = JSONDecoder()
-            jsonDecoder.dateDecodingStrategy = .formatted(dateFormatter)
-
-            let decoded = try! jsonDecoder.decode(MediaResponse.self, from: data)
-            let media = decoded.results
-            searchResultsCollectionView.setMedia(media)
+            let receivedMedia = try! await mediaService.media(query: query, filters: filters)
+            searchResultsCollectionView.setMedia(receivedMedia.results)
         }
-        // swiftlint:enable force_try force_unwrapping line_length
+        // swiftlint:enable force_try
     }
 }
 
