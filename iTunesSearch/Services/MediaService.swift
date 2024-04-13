@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol MediaService: AnyObject {
+protocol MediaService: AnyObject, Sendable {
     func media(query: String, filters: Filters) async throws -> MediaResponse
     func mediaImage(imageURL: URL) async throws -> MediaImageResponse
 }

@@ -1,5 +1,5 @@
 //
-//  FilterViewController.swift
+//  FiltersViewController.swift
 //  iTunesSearch
 //
 //  Created by Vlad Boguzh on 10.04.2024.
@@ -7,13 +7,11 @@
 
 import UIKit
 
-final class FilterViewController: UIViewController {
+final class FiltersViewController: UIViewController {
 
     var didSetFilters: ((Filters) -> Void)?
 
     private var filters: Filters
-
-    private let limitOptions = [10, 30, 50]
 
     private lazy var limitLabel: UILabel = {
         let label = UILabel()
@@ -24,6 +22,7 @@ final class FilterViewController: UIViewController {
     }()
 
     private lazy var limitSegmentedControl: UISegmentedControl = {
+        let limitOptions = [10, 30, 50]
         let sg = UISegmentedControl(items: limitOptions.map { "\($0)" })
         sg.selectedSegmentIndex = 1
         sg.backgroundColor = .systemGray6
@@ -153,7 +152,7 @@ final class FilterViewController: UIViewController {
 }
 
 // MARK: - Actions
-private extension FilterViewController {
+private extension FiltersViewController {
     @objc
     func didTapEntityButton() {
         let vc = MultiOptionViewController(

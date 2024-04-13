@@ -33,22 +33,20 @@ final class MainViewModel: ObservableObject {
 
     private var previousRequests: [String] = []
 
-    private let mediaService: MediaService
+    private let service: MediaService
 
-    init(mediaService: MediaService = MediaServiceImpl()) {
-        self.mediaService = mediaService
+    init(service: MediaService = MediaServiceImpl()) {
+        self.service = service
     }
 
     func getLastRequests() {
-        let lastRequests = previousRequests.reversed()
-        suggestions = Array(lastRequests)
+        suggestions = previousRequests.reversed()
     }
 
     private func performSearch() {
         Task {
             do {
-                print(query)
-                let receivedMedia = try await mediaService.media(query: query, filters: filters)
+                let receivedMedia = try await service.media(query: query, filters: filters)
                 mediaResults = receivedMedia.results
             } catch {
                 print(error)

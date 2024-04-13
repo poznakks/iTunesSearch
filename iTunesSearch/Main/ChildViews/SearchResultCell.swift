@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import Combine
 
 final class SearchResultCell: UICollectionViewCell {
 
     static let identifier = String(describing: SearchResultCell.self)
 
-    private let mediaService: MediaService = MediaServiceImpl()
+    private var viewModel: SearchResultCellViewModel?
+    private var cancellables: Set<AnyCancellable> = []
 
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
@@ -94,29 +96,31 @@ final class SearchResultCell: UICollectionViewCell {
         priceLabel.text = nil
         typeLabel.text = nil
         durationLabel.text = nil
+        viewModel?.cancelImageDownload()
     }
 
-    // swiftlint:disable force_try
-    func configure(with media: Media) {
-        switch media.wrapperType {
+    func configure(with viewModel: SearchResultCellViewModel) {
+        self.viewModel = viewModel
+        viewModel.getImage()
+
+        switch viewModel.media.wrapperType {
         case .track:
-            configureForTrack(media)
+            configureForTrack(viewModel.media)
 
         case .collection:
-            configureForCollection(media)
+            configureForCollection(viewModel.media)
 
         case .artist:
-            configureForArtist(media)
+            configureForArtist(viewModel.media)
         }
-        Task {
-            guard let artworkUrl = media.artworkUrl100 else { return }
-            let artworkImage = try! await mediaService
-                .mediaImage(imageURL: artworkUrl)
-                .preparingForDisplay()
-            imageView.image = artworkImage
-        }
+
+        viewModel.$image
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] image in
+                self?.imageView.image = image
+            }
+            .store(in: &cancellables)
     }
-    // swiftlint:enable force_try
 
     private func configureForTrack(_ media: Media) {
         titleLabel.text = media.trackName

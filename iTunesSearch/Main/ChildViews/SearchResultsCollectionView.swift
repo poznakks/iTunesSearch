@@ -52,8 +52,8 @@ extension SearchResultsCollectionView: UICollectionViewDataSource {
             withReuseIdentifier: SearchResultCell.identifier,
             for: indexPath
         ) as? SearchResultCell else { return UICollectionViewCell() }
-        let mediaItem = self.media[indexPath.row]
-        cell.configure(with: mediaItem)
+        let cellViewModel = SearchResultCellViewModel(media: media[indexPath.row])
+        cell.configure(with: cellViewModel)
         return cell
     }
 }

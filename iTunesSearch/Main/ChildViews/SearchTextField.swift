@@ -7,12 +7,17 @@
 
 import UIKit
 
+@MainActor
+protocol SearchTextFieldDelegate: AnyObject {
+    func onStartEditing()
+    func onTextUpdate(_ text: String)
+    func onReturn(_ text: String)
+    func onShowFilters()
+}
+
 final class SearchTextField: UITextField {
 
-    var onStartEditing: (() -> Void)?
-    var onTextUpdate: ((String) -> Void)?
-    var onReturn: ((String) -> Void)?
-    var showFilters: (() -> Void)?
+    weak var searchDelegate: SearchTextFieldDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -80,19 +85,19 @@ final class SearchTextField: UITextField {
 
     @objc
     private func didTapFilter() {
-        showFilters?()
+        searchDelegate?.onShowFilters()
     }
 }
 
 extension SearchTextField: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         resignFirstResponder()
-        onReturn?(text ?? "")
+        searchDelegate?.onReturn(text ?? "")
         return true
     }
 
     func textFieldDidBeginEditing(_ textField: UITextField) {
-        onStartEditing?()
+        searchDelegate?.onStartEditing()
     }
 
     func textField(
@@ -101,7 +106,7 @@ extension SearchTextField: UITextFieldDelegate {
         replacementString string: String
     ) -> Bool {
         let searchText = (textField.text as NSString?)?.replacingCharacters(in: range, with: string) ?? ""
-        onTextUpdate?(searchText)
+        searchDelegate?.onTextUpdate(searchText)
         return true
     }
 }

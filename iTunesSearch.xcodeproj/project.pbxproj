@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		211775AC2BC6EFCA004B6E23 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775AB2BC6EFCA004B6E23 /* FilterViewController.swift */; };
+		211775AC2BC6EFCA004B6E23 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775AB2BC6EFCA004B6E23 /* FiltersViewController.swift */; };
 		211775AE2BC83BCD004B6E23 /* SingleOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775AD2BC83BCD004B6E23 /* SingleOptionViewController.swift */; };
 		211775B02BC84F41004B6E23 /* ApplyFiltersButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775AF2BC84F40004B6E23 /* ApplyFiltersButton.swift */; };
 		211775B22BC857E6004B6E23 /* OptionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 211775B12BC857E6004B6E23 /* OptionsTableViewCell.swift */; };
@@ -33,6 +33,7 @@
 		21B413052BCB1D4700730295 /* MediaImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B413042BCB1D4700730295 /* MediaImageRequest.swift */; };
 		21B413072BCB1D5100730295 /* MediaImageResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B413062BCB1D5100730295 /* MediaImageResponse.swift */; };
 		21B4130C2BCB300900730295 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B4130B2BCB300900730295 /* MainViewModel.swift */; };
+		21B413102BCB49FB00730295 /* SearchResultCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B4130F2BCB49FB00730295 /* SearchResultCellViewModel.swift */; };
 		21FC75ED2BC0A2560096989A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75EC2BC0A2560096989A /* AppDelegate.swift */; };
 		21FC75EF2BC0A2560096989A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75EE2BC0A2560096989A /* SceneDelegate.swift */; };
 		21FC75F12BC0A2560096989A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75F02BC0A2560096989A /* MainViewController.swift */; };
@@ -46,7 +47,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		211775AB2BC6EFCA004B6E23 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		211775AB2BC6EFCA004B6E23 /* FiltersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
 		211775AD2BC83BCD004B6E23 /* SingleOptionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleOptionViewController.swift; sourceTree = "<group>"; };
 		211775AF2BC84F40004B6E23 /* ApplyFiltersButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApplyFiltersButton.swift; sourceTree = "<group>"; };
 		211775B12BC857E6004B6E23 /* OptionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OptionsTableViewCell.swift; sourceTree = "<group>"; };
@@ -72,6 +73,7 @@
 		21B413042BCB1D4700730295 /* MediaImageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaImageRequest.swift; sourceTree = "<group>"; };
 		21B413062BCB1D5100730295 /* MediaImageResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaImageResponse.swift; sourceTree = "<group>"; };
 		21B4130B2BCB300900730295 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		21B4130F2BCB49FB00730295 /* SearchResultCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCellViewModel.swift; sourceTree = "<group>"; };
 		21FC75E92BC0A2560096989A /* iTunesSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTunesSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21FC75EC2BC0A2560096989A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		21FC75EE2BC0A2560096989A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				21FC76082BC0B9650096989A /* SearchResultCell.swift */,
 				21FC760A2BC1CB3F0096989A /* SearchTextField.swift */,
 				219031E12BC6BABC001D141E /* SearchSuggestionsTableView.swift */,
+				21B4130F2BCB49FB00730295 /* SearchResultCellViewModel.swift */,
 			);
 			path = ChildViews;
 			sourceTree = "<group>";
@@ -121,7 +124,7 @@
 		21B412E52BCB03F000730295 /* Filters */ = {
 			isa = PBXGroup;
 			children = (
-				211775AB2BC6EFCA004B6E23 /* FilterViewController.swift */,
+				211775AB2BC6EFCA004B6E23 /* FiltersViewController.swift */,
 				211775AD2BC83BCD004B6E23 /* SingleOptionViewController.swift */,
 				211775B32BC85962004B6E23 /* MultiOptionViewController.swift */,
 				211775B12BC857E6004B6E23 /* OptionsTableViewCell.swift */,
@@ -363,7 +366,7 @@
 				21B412ED2BCB070600730295 /* NetworkResponseConverter.swift in Sources */,
 				211775B22BC857E6004B6E23 /* OptionsTableViewCell.swift in Sources */,
 				21FC75ED2BC0A2560096989A /* AppDelegate.swift in Sources */,
-				211775AC2BC6EFCA004B6E23 /* FilterViewController.swift in Sources */,
+				211775AC2BC6EFCA004B6E23 /* FiltersViewController.swift in Sources */,
 				211775AE2BC83BCD004B6E23 /* SingleOptionViewController.swift in Sources */,
 				211775B82BC92319004B6E23 /* Country.swift in Sources */,
 				21B412F72BCB071F00730295 /* RequestBuilder.swift in Sources */,
@@ -379,6 +382,7 @@
 				21B413012BCB1B4700730295 /* MediaRequest.swift in Sources */,
 				21B413032BCB1B5100730295 /* MediaResponse.swift in Sources */,
 				21B412FA2BCB071F00730295 /* NetworkRequest.swift in Sources */,
+				21B413102BCB49FB00730295 /* SearchResultCellViewModel.swift in Sources */,
 				21B413052BCB1D4700730295 /* MediaImageRequest.swift in Sources */,
 				21FC75EF2BC0A2560096989A /* SceneDelegate.swift in Sources */,
 			);
@@ -540,7 +544,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.vlad.iTunesSearch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -569,7 +573,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.vlad.iTunesSearch;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_STRICT_CONCURRENCY = minimal;
+				SWIFT_STRICT_CONCURRENCY = complete;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

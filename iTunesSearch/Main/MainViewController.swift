@@ -20,45 +20,21 @@ final class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        searchSuggestionsTableView.isHidden = true
+        subscribeOnViewModel()
         setupConstraints()
 
-        searchTextField.onStartEditing = { [weak self] in
-            guard let self else { return }
-            self.viewModel.getLastRequests()
-            self.searchSuggestionsTableView.isHidden = false
-        }
-
-        searchTextField.onTextUpdate = { [weak self] text in
-            guard let self else { return }
-            self.viewModel.intermediateQuery = text
-            self.searchSuggestionsTableView.isHidden = false
-        }
-
-        searchTextField.onReturn = { [weak self] text in
-            guard let self else { return }
-            self.viewModel.query = text
-            self.searchSuggestionsTableView.isHidden = true
-        }
-
-        searchTextField.showFilters = { [weak self] in
-            guard let self else { return }
-            let filterViewController = FilterViewController(filters: self.viewModel.filters)
-            filterViewController.didSetFilters = { filters in
-                self.viewModel.filters = filters
-                self.searchSuggestionsTableView.isHidden = true
-            }
-            self.present(filterViewController, animated: true)
-        }
+        searchTextField.searchDelegate = self
+        searchSuggestionsTableView.isHidden = true
 
         searchSuggestionsTableView.onCellTapHandler = { [weak self] suggestion in
             guard let self else { return }
-            self.viewModel.query = suggestion
+            self.onReturn(suggestion)
             self.searchTextField.text = suggestion
             self.searchTextField.resignFirstResponder()
-            self.searchSuggestionsTableView.isHidden = true
         }
+    }
 
+    private func subscribeOnViewModel() {
         viewModel.$suggestions
             .receive(on: DispatchQueue.main)
             .sink { [weak self] suggestions in
@@ -98,5 +74,31 @@ final class MainViewController: UIViewController {
             searchSuggestionsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             searchSuggestionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+    }
+}
+
+extension MainViewController: SearchTextFieldDelegate {
+    func onStartEditing() {
+        viewModel.getLastRequests()
+        searchSuggestionsTableView.isHidden = false
+    }
+
+    func onTextUpdate(_ text: String) {
+        viewModel.intermediateQuery = text
+        searchSuggestionsTableView.isHidden = false
+    }
+
+    func onReturn(_ text: String) {
+        viewModel.query = text
+        searchSuggestionsTableView.isHidden = true
+    }
+
+    func onShowFilters() {
+        let filterViewController = FiltersViewController(filters: self.viewModel.filters)
+        filterViewController.didSetFilters = { [weak self] filters in
+            self?.viewModel.filters = filters
+            self?.searchSuggestionsTableView.isHidden = true
+        }
+        present(filterViewController, animated: true)
     }
 }

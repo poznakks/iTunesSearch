@@ -7,7 +7,7 @@
 
 import Foundation
 
-protocol NetworkClient: AnyObject {
+protocol NetworkClient: AnyObject, Sendable {
     func send<Request: NetworkRequest>(request: Request) async throws -> Request.Response
 }
 
