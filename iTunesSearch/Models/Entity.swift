@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol SelectableOption: CaseIterable, Hashable {
-    var toString: String { get }
-}
-
 enum Entity: String, SelectableOption {
     case movie
     case movieArtist

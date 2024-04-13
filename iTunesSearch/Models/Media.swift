@@ -39,7 +39,7 @@ struct Media: Decodable {
     }
 }
 
-enum MediaType: String, Decodable, SelectableOption {
+enum MediaType: String, Decodable {
     case movie = "feature-movie"
     case song = "song"
 

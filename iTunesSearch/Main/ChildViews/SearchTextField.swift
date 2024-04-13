@@ -12,7 +12,7 @@ final class SearchTextField: UITextField {
     var onStartEditing: (() -> Void)?
     var onTextUpdate: ((String) -> Void)?
     var onReturn: ((String) -> Void)?
-    var presentFilters: (() -> Void)?
+    var showFilters: (() -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -80,7 +80,7 @@ final class SearchTextField: UITextField {
 
     @objc
     private func didTapFilter() {
-        presentFilters?()
+        showFilters?()
     }
 }
 

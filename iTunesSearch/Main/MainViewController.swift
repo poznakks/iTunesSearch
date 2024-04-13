@@ -9,6 +9,8 @@ import UIKit
 
 final class MainViewController: UIViewController {
 
+    private var query: String = ""
+    private var filters: Filters = .standard
     private var previousRequests: [String] = []
 
     private lazy var searchTextField = SearchTextField()
@@ -37,14 +39,19 @@ final class MainViewController: UIViewController {
 
         searchTextField.onReturn = { [weak self] text in
             guard let self else { return }
+            self.query = text
             self.performSearch(query: text)
             self.addRequestToPrevious(text)
             searchSuggestionsTableView.isHidden = true
         }
 
-        searchTextField.presentFilters = { [weak self] in
+        searchTextField.showFilters = { [weak self] in
             guard let self else { return }
-            let filterViewController = FilterViewController()
+            let filterViewController = FilterViewController(filters: filters)
+            filterViewController.didSetFilters = { filters in
+                self.filters = filters
+                self.performSearch(query: self.query)
+            }
             self.present(filterViewController, animated: true)
         }
 
@@ -85,7 +92,7 @@ final class MainViewController: UIViewController {
     }
 
     private func performSearch(query: String) {
-        // swiftlint:disable force_try
+        // swiftlint:disable force_try force_unwrapping
         Task {
             let url = URL(string: "https://itunes.apple.com/search?entity=movie&term=\(query)")!
             let (data, _) = try! await URLSession.shared.data(from: url)
@@ -100,7 +107,7 @@ final class MainViewController: UIViewController {
             let media = decoded.results
             searchResultsCollectionView.setMedia(media)
         }
-        // swiftlint:enable force_try
+        // swiftlint:enable force_try force_unwrapping
     }
 }
 

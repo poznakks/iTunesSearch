@@ -9,11 +9,11 @@ import UIKit
 
 final class FilterViewController: UIViewController {
 
+    var didSetFilters: ((Filters) -> Void)?
+
+    private var filters: Filters
+
     private let limitOptions = [10, 30, 50]
-    private var selectedMediaTypes = MediaType.allCases
-    private var includeExplicit = true
-    private var selectedEntities = Entity.allCases
-    private var selectedCountry = Country.us
 
     private lazy var limitLabel: UILabel = {
         let label = UILabel()
@@ -31,21 +31,21 @@ final class FilterViewController: UIViewController {
         return sg
     }()
 
-    private lazy var mediaTypeLabel: UILabel = {
+    private lazy var entityLabel: UILabel = {
         let label = UILabel()
-        label.text = "Media type"
+        label.text = "Entity"
         label.font = .systemFont(ofSize: 18, weight: .bold, design: .rounded)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
 
-    private lazy var mediaTypeButton: UIButton = {
+    private lazy var entityButton: UIButton = {
         var config = UIButton.Configuration.filled()
         config.baseBackgroundColor = .systemGray5
         config.baseForegroundColor = .black
-        config.title = selectedMediaTypes.map { $0.toString }.joined(separator: ", ")
+        config.title = filters.entities.map { $0.toString }.joined(separator: ", ")
         let button = UIButton(configuration: config)
-        button.addTarget(self, action: #selector(didTapMediaTypeButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapEntityButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
         return button
@@ -61,29 +61,9 @@ final class FilterViewController: UIViewController {
 
     private lazy var explicitSwitch: UISwitch = {
         let sw = UISwitch()
-        sw.isOn = includeExplicit
+        sw.isOn = filters.includeExplicit
         sw.translatesAutoresizingMaskIntoConstraints = false
         return sw
-    }()
-
-    private lazy var entityLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Entity"
-        label.font = .systemFont(ofSize: 18, weight: .bold, design: .rounded)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
-
-    private lazy var entityButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.baseBackgroundColor = .systemGray5
-        config.baseForegroundColor = .black
-        config.title = selectedEntities.map { $0.toString }.joined(separator: ", ")
-        let button = UIButton(configuration: config)
-        button.addTarget(self, action: #selector(didTapEntityButton), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
-        return button
     }()
 
     private lazy var countryLabel: UILabel = {
@@ -98,7 +78,7 @@ final class FilterViewController: UIViewController {
         var config = UIButton.Configuration.filled()
         config.baseBackgroundColor = .systemGray5
         config.baseForegroundColor = .black
-        config.title = selectedCountry.toString
+        config.title = filters.country.toString
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapCountryButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
@@ -113,6 +93,16 @@ final class FilterViewController: UIViewController {
         return button
     }()
 
+    init(filters: Filters) {
+        self.filters = filters
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -121,9 +111,8 @@ final class FilterViewController: UIViewController {
 
     private func setupConstraints() {
         let limitStack = makeStackView(label: limitLabel, control: limitSegmentedControl)
-        let mediaTypeStack = makeStackView(label: mediaTypeLabel, control: mediaTypeButton)
-        let explicitStack = makeStackView(label: explicitLabel, control: explicitSwitch)
         let entityStack = makeStackView(label: entityLabel, control: entityButton)
+        let explicitStack = makeStackView(label: explicitLabel, control: explicitSwitch)
         let countryStack = makeStackView(label: countryLabel, control: countryButton)
 
         NSLayoutConstraint.activate([
@@ -132,24 +121,24 @@ final class FilterViewController: UIViewController {
             limitStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             limitSegmentedControl.heightAnchor.constraint(equalToConstant: 40),
 
-            mediaTypeStack.topAnchor.constraint(equalTo: limitStack.bottomAnchor, constant: 20),
-            mediaTypeStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            mediaTypeStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            mediaTypeButton.heightAnchor.constraint(equalToConstant: 40),
-
-            explicitStack.topAnchor.constraint(equalTo: mediaTypeStack.bottomAnchor, constant: 20),
-            explicitStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            explicitStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-
-            entityStack.topAnchor.constraint(equalTo: explicitStack.bottomAnchor, constant: 20),
+            entityStack.topAnchor.constraint(equalTo: limitStack.bottomAnchor, constant: 20),
             entityStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             entityStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             entityButton.heightAnchor.constraint(equalToConstant: 40),
 
-            countryStack.topAnchor.constraint(equalTo: entityStack.bottomAnchor, constant: 20),
+            explicitStack.topAnchor.constraint(equalTo: entityStack.bottomAnchor, constant: 20),
+            explicitStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            explicitStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+
+            countryStack.topAnchor.constraint(equalTo: explicitStack.bottomAnchor, constant: 20),
             countryStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             countryStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            countryButton.heightAnchor.constraint(equalToConstant: 40)
+            countryButton.heightAnchor.constraint(equalToConstant: 40),
+
+            applyButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            applyButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            applyButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -54),
+            applyButton.heightAnchor.constraint(equalToConstant: 40)
         ])
     }
 
@@ -166,46 +155,36 @@ final class FilterViewController: UIViewController {
 // MARK: - Actions
 private extension FilterViewController {
     @objc
-    private func didTapMediaTypeButton() {
-        let vc = MultiOptionViewController(
-            options: MediaType.allCases,
-            selected: selectedMediaTypes
-        )
-        vc.didSelectOptions = { [weak self] selectedOptions in
-            self?.selectedMediaTypes = selectedOptions
-            self?.mediaTypeButton.configuration?.title = selectedOptions.map { $0.toString }.joined(separator: ", ")
-        }
-        present(vc, animated: true)
-    }
-
-    @objc
-    private func didTapEntityButton() {
+    func didTapEntityButton() {
         let vc = MultiOptionViewController(
             options: Entity.allCases,
-            selected: selectedEntities
+            selected: filters.entities
         )
         vc.didSelectOptions = { [weak self] selectedOptions in
-            self?.selectedEntities = selectedOptions
-            self?.entityButton.configuration?.title = selectedOptions.map { $0.toString }.joined(separator: ", ")
+            self?.filters.entities = selectedOptions
+            self?.entityButton.configuration?.title = selectedOptions
+                .map { $0.toString }
+                .joined(separator: ", ")
         }
         present(vc, animated: true)
     }
 
     @objc
-    private func didTapCountryButton() {
+    func didTapCountryButton() {
         let vc = SingleOptionViewController(
             options: Country.allCases,
-            selected: selectedCountry
+            selected: filters.country
         )
         vc.didSelectOption = { [weak self] selectedOption in
-            self?.selectedCountry = selectedOption
+            self?.filters.country = selectedOption
             self?.countryButton.configuration?.title = selectedOption.toString
         }
         present(vc, animated: true)
     }
 
     @objc
-    private func didTapApplyFilters() {
+    func didTapApplyFilters() {
+        didSetFilters?(filters)
         dismiss(animated: true, completion: nil)
     }
 }
