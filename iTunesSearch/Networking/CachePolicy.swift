@@ -7,8 +7,11 @@
 
 import Foundation
 
-enum CachePolicy: TimeInterval {
+enum CachePolicy {
     case noCache
-    case oneHour = 3600
+    case inMemory(CacheTime)
+}
+
+enum CacheTime: TimeInterval {
     case unlimited
 }

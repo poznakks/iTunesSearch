@@ -17,18 +17,18 @@ final class NetworkClientImpl: NetworkClient {
     private let urlSession = URLSession(configuration: .default)
 
     // MARK: - Dependencies
-    private let urlCache: URLCache
-    private let userDefaults: UserDefaults
+    private let inMemoryCache: URLCache
     private let requestBuilder: RequestBuilder
 
     // MARK: - Init
     init(
-        urlCache: URLCache = URLCache(),
-        userDefaults: UserDefaults = .standard,
+        inMemoryCache: URLCache = URLCache(
+            memoryCapacity: 100 * 1024 * 1024, // 100 MB
+            diskCapacity: 0
+        ),
         requestBuilder: RequestBuilder = RequestBuilderImpl()
     ) {
-        self.urlCache = urlCache
-        self.userDefaults = userDefaults
+        self.inMemoryCache = inMemoryCache
         self.requestBuilder = requestBuilder
     }
 
@@ -86,45 +86,19 @@ final class NetworkClientImpl: NetworkClient {
         cachePolicy: CachePolicy,
         cachedURLResponse: CachedURLResponse
     ) {
-        guard let urlString = urlRequest.url?.absoluteString else { return }
-
-        let expirationTimestamp: Double
         switch cachePolicy {
         case .noCache:
-            expirationTimestamp = Date.distantPast.timeIntervalSince1970
+            break
 
-        case .oneHour:
-            expirationTimestamp = Date().timeIntervalSince1970 + cachePolicy.rawValue
-
-        case .unlimited:
-            expirationTimestamp = Date.distantFuture.timeIntervalSince1970
+        case .inMemory(let cacheTime):
+            switch cacheTime {
+            case .unlimited:
+                inMemoryCache.storeCachedResponse(cachedURLResponse, for: urlRequest)
+            }
         }
-
-        userDefaults.set(
-            expirationTimestamp,
-            forKey: Key.expirationTimestamp(urlString: urlString)
-        )
-        urlCache.storeCachedResponse(cachedURLResponse, for: urlRequest)
     }
 
     private func cachedData(urlRequest: URLRequest) -> Data? {
-        guard let urlString = urlRequest.url?.absoluteString,
-              let storedData = userDefaults.object(forKey: Key.expirationTimestamp(urlString: urlString)),
-              let expirationTimestamp = storedData as? TimeInterval
-        else { return nil }
-
-        guard expirationTimestamp > Date.timeIntervalSinceReferenceDate else {
-            userDefaults.removeObject(forKey: Key.expirationTimestamp(urlString: urlString))
-            return nil
-        }
-
-        return urlCache.cachedResponse(for: urlRequest)?.data
-    }
-}
-
-// MARK: - Key
-private enum Key {
-    static func expirationTimestamp(urlString: String) -> String {
-        "ExpirationTimestamp_\(urlString)"
+        inMemoryCache.cachedResponse(for: urlRequest)?.data
     }
 }

@@ -8,22 +8,16 @@
 import Foundation
 
 protocol RequestBuilder: AnyObject {
-    func build(request: any NetworkRequest) throws -> URLRequest
+    func build<Request: NetworkRequest>(request: Request) throws -> URLRequest
 }
 
 final class RequestBuilderImpl: RequestBuilder {
+    func build<Request: NetworkRequest>(request: Request) throws -> URLRequest {
+        let url = request.baseURL
+            .appending(path: request.path)
+            .appending(queryItems: request.queryItems)
 
-    func build(request: any NetworkRequest) throws -> URLRequest {
-        var components = URLComponents()
-        components.scheme = "https"
-        components.host = request.host
-        components.path = request.path
-        components.queryItems = request.queryItems
-
-        guard let url = components.url else {
-            print("Failed to create URL")
-            throw NetworkError.cantBuildUrlFromRequest
-        }
+        print("built url: ", url)
 
         var request = URLRequest(url: url)
         request.httpMethod = request.httpMethod
