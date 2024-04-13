@@ -86,9 +86,12 @@ final class SearchResultCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-        titleLabel.text = nil
-        priceLabel.text = nil
         imageView.image = nil
+        titleLabel.text = nil
+        artistLabel.text = nil
+        priceLabel.text = nil
+        typeLabel.text = nil
+        durationLabel.text = nil
     }
 
     // swiftlint:disable force_try
