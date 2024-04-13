@@ -92,9 +92,14 @@ final class MainViewController: UIViewController {
     }
 
     private func performSearch(query: String) {
-        // swiftlint:disable force_try force_unwrapping
+        // swiftlint:disable force_try force_unwrapping line_length
         Task {
-            let url = URL(string: "https://itunes.apple.com/search?entity=movie&term=\(query)")!
+            let entity = filters.entities.map { $0.rawValue }.joined(separator: ",")
+            let country = filters.country.rawValue
+            let limit = filters.limit
+            let string = "https://itunes.apple.com/search?term=\(query)&entity=\(entity)&country=\(country)&limit=\(limit)"
+            print(string)
+            let url = URL(string: string)!
             let (data, _) = try! await URLSession.shared.data(from: url)
 
             let dateFormatter = DateFormatter()
@@ -107,7 +112,7 @@ final class MainViewController: UIViewController {
             let media = decoded.results
             searchResultsCollectionView.setMedia(media)
         }
-        // swiftlint:enable force_try force_unwrapping
+        // swiftlint:enable force_try force_unwrapping line_length
     }
 }
 

@@ -10,7 +10,7 @@ import Foundation
 enum Entity: String, SelectableOption {
     case movie
     case movieArtist
-    case track
+    case song
     case musicArtist
     case album
 
@@ -20,8 +20,8 @@ enum Entity: String, SelectableOption {
             return "Movie"
         case .movieArtist:
             return "Movie Artist"
-        case .track:
-            return "Track"
+        case .song:
+            return "Song"
         case .musicArtist:
             return "Music Artist"
         case .album:

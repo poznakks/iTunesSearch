@@ -24,7 +24,6 @@ final class SearchResultCell: UICollectionViewCell {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Title"
         label.textAlignment = .left
         label.numberOfLines = 2
         label.font = .systemFont(ofSize: 16, weight: .bold)
@@ -66,7 +65,6 @@ final class SearchResultCell: UICollectionViewCell {
 
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
-        label.text = "$19.99"
         label.textAlignment = .left
         label.numberOfLines = 1
         label.font = .systemFont(ofSize: 16, weight: .bold)
@@ -95,23 +93,50 @@ final class SearchResultCell: UICollectionViewCell {
 
     // swiftlint:disable force_try
     func configure(with media: Media) {
-        titleLabel.text = media.trackName
-        artistLabel.text = media.artistName
-        typeLabel.text = media.kind.toString
-        durationLabel.text = media.trackDurationString
+        switch media.wrapperType {
+        case .track:
+            configureForTrack(media)
 
-        if let trackPrice = media.trackPrice {
-            priceLabel.text = "\(trackPrice) \(media.currency)"
-        } else {
-            priceLabel.text = "Price not specified"
+        case .collection:
+            configureForCollection(media)
+
+        case .artist:
+            configureForArtist(media)
         }
         Task {
-            let (data, _) = try! await URLSession.shared.data(from: media.artworkUrl100)
+            guard let artworkUrl = media.artworkUrl100 else { return }
+            let (data, _) = try! await URLSession.shared.data(from: artworkUrl)
             let image = UIImage(data: data)?.preparingForDisplay()
             imageView.image = image
         }
     }
     // swiftlint:enable force_try
+
+    private func configureForTrack(_ media: Media) {
+        titleLabel.text = media.trackName
+        artistLabel.text = media.artistName
+        typeLabel.text = media.kind?.toString
+        durationLabel.text = media.trackDurationString
+
+        if let trackPrice = media.trackPrice,
+           let currency = media.currency {
+            priceLabel.text = "\(trackPrice) \(currency)"
+        } else {
+            priceLabel.text = "Price not specified"
+        }
+    }
+
+    private func configureForCollection(_ media: Media) {
+        titleLabel.text = media.collectionName
+        artistLabel.text = media.artistName
+        typeLabel.text = media.collectionType
+    }
+
+    private func configureForArtist(_ media: Media) {
+        titleLabel.text = media.artistName
+        artistLabel.text = media.primaryGenreName
+        typeLabel.text = media.artistType
+    }
 
     private func setupConstraints() {
         let stack: UIStackView = {
