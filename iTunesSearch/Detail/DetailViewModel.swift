@@ -14,6 +14,7 @@ final class DetailViewModel: ObservableObject {
 
     @Published private(set) var image: UIImage?
     @Published private(set) var artistInfo: ArtistInfo?
+    @Published private(set) var screenState: ScreenState = .downloading
 
     private let service: ItunesService
     private var imageTask: Task<Void, Never>?
@@ -27,16 +28,20 @@ final class DetailViewModel: ObservableObject {
     func getImage() {
         imageTask = Task {
             do {
-                guard let artwork = media.artworkUrl100 else { return }
+                screenState = .downloading
+                guard let artwork = media.artworkUrl100 else {
+                    screenState = .content
+                    return
+                }
                 let image = try await service
                     .mediaImage(imageURL: artwork)
                     .preparingForDisplay()
                 self.image = image
+                screenState = .content
+            } catch let error as NetworkError {
+                screenState = .error(message: error.rawValue)
             } catch {
-                // если картинка не пришла, то ее можно просто не отображать
-                // на функциональность это никак не влияет
-                // либо можно предусмотреть какую-нибудь placeholder картинку
-                print(error)
+                screenState = .error(message: "Something went wrong")
             }
         }
     }
@@ -44,12 +49,22 @@ final class DetailViewModel: ObservableObject {
     func getArtistInfo() {
         artistTask = Task {
             do {
-                guard let artistId = media.artistId else { return }
+                screenState = .downloading
+                guard let artistId = media.artistId else {
+                    screenState = .content
+                    return
+                }
                 let artistResponse = try await service.artistLookup(artistId: artistId)
-                guard let artistInfo = artistResponse.results.first else { return }
+                guard let artistInfo = artistResponse.results.first else {
+                    screenState = .content
+                    return
+                }
                 self.artistInfo = artistInfo
+                screenState = .content
+            } catch let error as NetworkError {
+                screenState = .error(message: error.rawValue)
             } catch {
-                print(error)
+                screenState = .error(message: "Something went wrong")
             }
         }
     }

@@ -27,6 +27,25 @@ final class DetailViewController: UIViewController {
         return view
     }()
 
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.style = .large
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(indicator)
+        return indicator
+    }()
+
+    private lazy var errorLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(label)
+        return label
+    }()
+
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -192,6 +211,33 @@ final class DetailViewController: UIViewController {
                 self.artistPrimaryGenreLabel.text = "Primary genre: " + genre
             }
             .store(in: &cancellables)
+
+        viewModel.$screenState
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.handleState()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handleState() {
+        switch viewModel.screenState {
+        case .downloading:
+            activityIndicator.startAnimating()
+            contentView.isHidden = true
+            errorLabel.isHidden = true
+
+        case .error(let message):
+            activityIndicator.stopAnimating()
+            contentView.isHidden = true
+            errorLabel.isHidden = false
+            errorLabel.text = message
+
+        case .content:
+            activityIndicator.stopAnimating()
+            errorLabel.isHidden = true
+            contentView.isHidden = false
+        }
     }
 
     private func configure() {
@@ -309,7 +355,13 @@ final class DetailViewController: UIViewController {
             aboutArtistButton.topAnchor.constraint(equalTo: artistPrimaryGenreLabel.bottomAnchor, constant: 10),
             aboutArtistButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             aboutArtistButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            aboutArtistButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            aboutArtistButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+
+            errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            errorLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
 
