@@ -116,11 +116,9 @@
 		219031E42BC6D2DE001D141E /* ChildViews */ = {
 			isa = PBXGroup;
 			children = (
-				21FC76062BC0B77F0096989A /* SearchResultsCollectionView.swift */,
-				21FC76082BC0B9650096989A /* SearchResultCell.swift */,
 				21FC760A2BC1CB3F0096989A /* SearchTextField.swift */,
 				219031E12BC6BABC001D141E /* SearchSuggestionsTableView.swift */,
-				21B4130F2BCB49FB00730295 /* SearchResultCellViewModel.swift */,
+				21BD1A5E2BCC24D4004B5F2C /* SearchResultCollectionView */,
 			);
 			path = ChildViews;
 			sourceTree = "<group>";
@@ -129,11 +127,8 @@
 			isa = PBXGroup;
 			children = (
 				211775AB2BC6EFCA004B6E23 /* FiltersViewController.swift */,
-				211775AD2BC83BCD004B6E23 /* SingleOptionViewController.swift */,
-				211775B32BC85962004B6E23 /* MultiOptionViewController.swift */,
-				211775B12BC857E6004B6E23 /* OptionsTableViewCell.swift */,
-				211775AF2BC84F40004B6E23 /* ApplyFiltersButton.swift */,
 				21BD1A582BCC13C7004B5F2C /* FiltersViewModel.swift */,
+				21BD1A5C2BCC24B5004B5F2C /* ChildViews */,
 			);
 			path = Filters;
 			sourceTree = "<group>";
@@ -189,6 +184,27 @@
 				21B413062BCB1D5100730295 /* MediaImageResponse.swift */,
 			);
 			path = MediaImageRequest;
+			sourceTree = "<group>";
+		};
+		21BD1A5C2BCC24B5004B5F2C /* ChildViews */ = {
+			isa = PBXGroup;
+			children = (
+				211775AD2BC83BCD004B6E23 /* SingleOptionViewController.swift */,
+				211775B32BC85962004B6E23 /* MultiOptionViewController.swift */,
+				211775B12BC857E6004B6E23 /* OptionsTableViewCell.swift */,
+				211775AF2BC84F40004B6E23 /* ApplyFiltersButton.swift */,
+			);
+			path = ChildViews;
+			sourceTree = "<group>";
+		};
+		21BD1A5E2BCC24D4004B5F2C /* SearchResultCollectionView */ = {
+			isa = PBXGroup;
+			children = (
+				21FC76062BC0B77F0096989A /* SearchResultsCollectionView.swift */,
+				21FC76082BC0B9650096989A /* SearchResultCell.swift */,
+				21B4130F2BCB49FB00730295 /* SearchResultCellViewModel.swift */,
+			);
+			path = SearchResultCollectionView;
 			sourceTree = "<group>";
 		};
 		21FC75E02BC0A2560096989A = {
