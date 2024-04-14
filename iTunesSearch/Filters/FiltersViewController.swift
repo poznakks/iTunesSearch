@@ -6,84 +6,49 @@
 //
 
 import UIKit
+import Combine
 
 final class FiltersViewController: UIViewController {
 
     var didSetFilters: ((Filters) -> Void)?
 
-    private var filters: Filters
+    private let viewModel: FiltersViewModel
+    private var cancellables: Set<AnyCancellable> = []
 
-    private lazy var limitLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Number of results"
-        label.font = .systemFont(ofSize: 18, weight: .bold, design: .rounded)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private lazy var limitLabel = makeLabel(text: "Number of results")
 
     private lazy var limitSegmentedControl: UISegmentedControl = {
-        let limitOptions = [10, 30, 50]
-        let sg = UISegmentedControl(items: limitOptions.map { "\($0)" })
-        sg.selectedSegmentIndex = 1
+        let sg = UISegmentedControl(items: viewModel.limitOptions.asString())
+        sg.selectedSegmentIndex = viewModel.selectedLimitIndex
         sg.backgroundColor = .systemGray6
+        sg.addTarget(self, action: #selector(didChangeLimit), for: .valueChanged)
         sg.translatesAutoresizingMaskIntoConstraints = false
         return sg
     }()
 
-    private lazy var entityLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Entity"
-        label.font = .systemFont(ofSize: 18, weight: .bold, design: .rounded)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private lazy var entityLabel = makeLabel(text: "Entity")
 
-    private lazy var entityButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.baseBackgroundColor = .systemGray5
-        config.baseForegroundColor = .black
-        config.title = filters.entities.map { $0.toString }.joined(separator: ", ")
-        let button = UIButton(configuration: config)
-        button.addTarget(self, action: #selector(didTapEntityButton), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
-        return button
-    }()
+    private lazy var entityButton = makeOptionsButton(
+        title: viewModel.entitiesString,
+        action: #selector(didTapEntityButton)
+    )
 
-    private lazy var explicitLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Include explicit content"
-        label.font = .systemFont(ofSize: 18, weight: .bold, design: .rounded)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private lazy var explicitLabel = makeLabel(text: "Include explicit content")
 
     private lazy var explicitSwitch: UISwitch = {
         let sw = UISwitch()
-        sw.isOn = filters.includeExplicit
+        sw.isOn = viewModel.includeExplicit
+        sw.addTarget(self, action: #selector(didChangeExplicit), for: .valueChanged)
         sw.translatesAutoresizingMaskIntoConstraints = false
         return sw
     }()
 
-    private lazy var countryLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Country"
-        label.font = .systemFont(ofSize: 18, weight: .bold, design: .rounded)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
+    private lazy var countryLabel = makeLabel(text: "Country")
 
-    private lazy var countryButton: UIButton = {
-        var config = UIButton.Configuration.filled()
-        config.baseBackgroundColor = .systemGray5
-        config.baseForegroundColor = .black
-        config.title = filters.country.toString
-        let button = UIButton(configuration: config)
-        button.addTarget(self, action: #selector(didTapCountryButton), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(button)
-        return button
-    }()
+    private lazy var countryButton = makeOptionsButton(
+        title: viewModel.countryString,
+        action: #selector(didTapCountryButton)
+    )
 
     private lazy var applyButton: ApplyFiltersButton = {
         let button = ApplyFiltersButton()
@@ -92,8 +57,8 @@ final class FiltersViewController: UIViewController {
         return button
     }()
 
-    init(filters: Filters) {
-        self.filters = filters
+    init(viewModel: FiltersViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -106,6 +71,23 @@ final class FiltersViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         setupConstraints()
+        subscribeOnViewModel()
+    }
+
+    private func subscribeOnViewModel() {
+        viewModel.$entities
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.entityButton.configuration?.title = self?.viewModel.entitiesString
+            }
+            .store(in: &cancellables)
+
+        viewModel.$country
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.countryButton.configuration?.title = self?.viewModel.countryString
+            }
+            .store(in: &cancellables)
     }
 
     private func setupConstraints() {
@@ -149,41 +131,66 @@ final class FiltersViewController: UIViewController {
         view.addSubview(stack)
         return stack
     }
+
+    private func makeLabel(text: String) -> UILabel {
+        let label = UILabel()
+        label.text = text
+        label.font = .systemFont(ofSize: 18, weight: .bold, design: .rounded)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }
+
+    private func makeOptionsButton(title: String, action: Selector) -> UIButton {
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = .systemGray5
+        config.baseForegroundColor = .black
+        config.title = title
+        let button = UIButton(configuration: config)
+        button.addTarget(self, action: action, for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }
 }
 
 // MARK: - Actions
 private extension FiltersViewController {
     @objc
+    func didChangeLimit() {
+        viewModel.selectedLimitIndex = limitSegmentedControl.selectedSegmentIndex
+    }
+
+    @objc
     func didTapEntityButton() {
         let vc = MultiOptionViewController(
             options: Entity.allCases,
-            selected: filters.entities
+            selected: viewModel.entities
         )
         vc.didSelectOptions = { [weak self] selectedOptions in
-            self?.filters.entities = selectedOptions
-            self?.entityButton.configuration?.title = selectedOptions
-                .map { $0.toString }
-                .joined(separator: ", ")
+            self?.viewModel.entities = selectedOptions
         }
         present(vc, animated: true)
+    }
+
+    @objc
+    func didChangeExplicit() {
+        viewModel.includeExplicit = explicitSwitch.isOn
     }
 
     @objc
     func didTapCountryButton() {
         let vc = SingleOptionViewController(
             options: Country.allCases,
-            selected: filters.country
+            selected: viewModel.country
         )
         vc.didSelectOption = { [weak self] selectedOption in
-            self?.filters.country = selectedOption
-            self?.countryButton.configuration?.title = selectedOption.toString
+            self?.viewModel.country = selectedOption
         }
         present(vc, animated: true)
     }
 
     @objc
     func didTapApplyFilters() {
-        didSetFilters?(filters)
+        didSetFilters?(viewModel.filters)
         dismiss(animated: true, completion: nil)
     }
 }

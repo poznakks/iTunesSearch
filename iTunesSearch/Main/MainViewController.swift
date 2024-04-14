@@ -94,11 +94,12 @@ extension MainViewController: SearchTextFieldDelegate {
     }
 
     func onShowFilters() {
-        let filterViewController = FiltersViewController(filters: self.viewModel.filters)
-        filterViewController.didSetFilters = { [weak self] filters in
+        let filtersViewModel = FiltersViewModel(filters: viewModel.filters)
+        let filtersViewController = FiltersViewController(viewModel: filtersViewModel)
+        filtersViewController.didSetFilters = { [weak self] filters in
             self?.viewModel.filters = filters
             self?.searchSuggestionsTableView.isHidden = true
         }
-        present(filterViewController, animated: true)
+        present(filtersViewController, animated: true)
     }
 }
