@@ -14,10 +14,10 @@ final class SearchResultCellViewModel: ObservableObject {
 
     @Published private(set) var image: UIImage?
 
-    private let service: MediaService
+    private let service: ItunesService
     private var task: Task<Void, Never>?
 
-    init(media: Media, service: MediaService = MediaServiceImpl()) {
+    init(media: Media, service: ItunesService = ItunesServiceImpl()) {
         self.media = media
         self.service = service
     }
@@ -25,7 +25,9 @@ final class SearchResultCellViewModel: ObservableObject {
     func getImage() {
         task = Task {
             guard let artwork = media.artworkUrl100 else { return }
-            let image = try? await service.mediaImage(imageURL: artwork)
+            let image = try? await service
+                .mediaImage(imageURL: artwork)
+                .preparingForDisplay()
             // если картинка не пришла, то ее можно просто не отображать
             // на функциональность это никак не влияет
             // либо можно предусмотреть какую-нибудь placeholder картинку

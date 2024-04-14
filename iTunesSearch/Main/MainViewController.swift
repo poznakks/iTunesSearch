@@ -21,16 +21,26 @@ final class MainViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         subscribeOnViewModel()
+        setTapHandlers()
         setupConstraints()
 
         searchTextField.searchDelegate = self
         searchSuggestionsTableView.isHidden = true
+    }
 
+    private func setTapHandlers() {
         searchSuggestionsTableView.onCellTapHandler = { [weak self] suggestion in
             guard let self else { return }
             self.onReturn(suggestion)
             self.searchTextField.text = suggestion
             self.searchTextField.resignFirstResponder()
+        }
+
+        searchResultsCollectionView.onCellTapHandler = { [weak self] media in
+            guard let self else { return }
+            let viewModel = DetailViewModel(media: media)
+            let detailVC = DetailViewController(viewModel: viewModel)
+            self.navigationController?.pushViewController(detailVC, animated: true)
         }
     }
 

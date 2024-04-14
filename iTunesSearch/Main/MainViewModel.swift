@@ -33,9 +33,9 @@ final class MainViewModel: ObservableObject {
 
     private var previousRequests: [String] = []
 
-    private let service: MediaService
+    private let service: ItunesService
 
-    init(service: MediaService = MediaServiceImpl()) {
+    init(service: ItunesService = ItunesServiceImpl()) {
         self.service = service
     }
 

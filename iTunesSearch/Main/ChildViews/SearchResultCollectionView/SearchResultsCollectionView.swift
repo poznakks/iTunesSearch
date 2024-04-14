@@ -9,6 +9,8 @@ import UIKit
 
 final class SearchResultsCollectionView: UICollectionView {
 
+    var onCellTapHandler: ((Media) -> Void)?
+
     private var media: [Media] = []
 
     init() {
@@ -63,6 +65,8 @@ extension SearchResultsCollectionView: UICollectionViewDelegateFlowLayout {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
+        let media = media[indexPath.row]
+        onCellTapHandler?(media)
         collectionView.deselectItem(at: indexPath, animated: true)
     }
 

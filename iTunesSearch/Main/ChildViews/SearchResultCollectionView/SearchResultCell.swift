@@ -105,13 +105,13 @@ final class SearchResultCell: UICollectionViewCell {
 
         switch viewModel.media.wrapperType {
         case .track:
-            configureForTrack(viewModel.media)
+            configureForTrack()
 
         case .collection:
-            configureForCollection(viewModel.media)
+            configureForCollection()
 
         case .artist:
-            configureForArtist(viewModel.media)
+            configureForArtist()
         }
 
         viewModel.$image
@@ -122,7 +122,8 @@ final class SearchResultCell: UICollectionViewCell {
             .store(in: &cancellables)
     }
 
-    private func configureForTrack(_ media: Media) {
+    private func configureForTrack() {
+        guard let media = viewModel?.media else { return }
         titleLabel.text = media.trackName
         artistLabel.text = media.artistName
         typeLabel.text = media.kind?.toString
@@ -136,13 +137,15 @@ final class SearchResultCell: UICollectionViewCell {
         }
     }
 
-    private func configureForCollection(_ media: Media) {
+    private func configureForCollection() {
+        guard let media = viewModel?.media else { return }
         titleLabel.text = media.collectionName
         artistLabel.text = media.artistName
         typeLabel.text = media.collectionType
     }
 
-    private func configureForArtist(_ media: Media) {
+    private func configureForArtist() {
+        guard let media = viewModel?.media else { return }
         titleLabel.text = media.artistName
         artistLabel.text = media.primaryGenreName
         typeLabel.text = media.artistType

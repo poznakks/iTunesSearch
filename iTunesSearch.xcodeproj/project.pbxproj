@@ -27,7 +27,7 @@
 		21B412FA2BCB071F00730295 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B412F42BCB071F00730295 /* NetworkRequest.swift */; };
 		21B412FB2BCB071F00730295 /* HttpMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B412F52BCB071F00730295 /* HttpMethod.swift */; };
 		21B412FC2BCB071F00730295 /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B412F62BCB071F00730295 /* NetworkError.swift */; };
-		21B412FF2BCB1AEB00730295 /* MediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B412FE2BCB1AEB00730295 /* MediaService.swift */; };
+		21B412FF2BCB1AEB00730295 /* ItunesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B412FE2BCB1AEB00730295 /* ItunesService.swift */; };
 		21B413012BCB1B4700730295 /* MediaRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B413002BCB1B4700730295 /* MediaRequest.swift */; };
 		21B413032BCB1B5100730295 /* MediaResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B413022BCB1B5100730295 /* MediaResponse.swift */; };
 		21B413052BCB1D4700730295 /* MediaImageRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B413042BCB1D4700730295 /* MediaImageRequest.swift */; };
@@ -36,6 +36,10 @@
 		21B413102BCB49FB00730295 /* SearchResultCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B4130F2BCB49FB00730295 /* SearchResultCellViewModel.swift */; };
 		21BD1A592BCC13C7004B5F2C /* FiltersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BD1A582BCC13C7004B5F2C /* FiltersViewModel.swift */; };
 		21BD1A5B2BCC2128004B5F2C /* Array+asString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BD1A5A2BCC2128004B5F2C /* Array+asString.swift */; };
+		21BD1A612BCC37BD004B5F2C /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BD1A602BCC37BD004B5F2C /* DetailViewController.swift */; };
+		21BD1A632BCC39CC004B5F2C /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BD1A622BCC39CC004B5F2C /* DetailViewModel.swift */; };
+		21E069562BCC61F70005B285 /* ArtistLookupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E069552BCC61F70005B285 /* ArtistLookupRequest.swift */; };
+		21E069582BCC62040005B285 /* ArtistLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E069572BCC62040005B285 /* ArtistLookupResponse.swift */; };
 		21FC75ED2BC0A2560096989A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75EC2BC0A2560096989A /* AppDelegate.swift */; };
 		21FC75EF2BC0A2560096989A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75EE2BC0A2560096989A /* SceneDelegate.swift */; };
 		21FC75F12BC0A2560096989A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75F02BC0A2560096989A /* MainViewController.swift */; };
@@ -69,7 +73,7 @@
 		21B412F42BCB071F00730295 /* NetworkRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		21B412F52BCB071F00730295 /* HttpMethod.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpMethod.swift; sourceTree = "<group>"; };
 		21B412F62BCB071F00730295 /* NetworkError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkError.swift; sourceTree = "<group>"; };
-		21B412FE2BCB1AEB00730295 /* MediaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaService.swift; sourceTree = "<group>"; };
+		21B412FE2BCB1AEB00730295 /* ItunesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItunesService.swift; sourceTree = "<group>"; };
 		21B413002BCB1B4700730295 /* MediaRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaRequest.swift; sourceTree = "<group>"; };
 		21B413022BCB1B5100730295 /* MediaResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaResponse.swift; sourceTree = "<group>"; };
 		21B413042BCB1D4700730295 /* MediaImageRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaImageRequest.swift; sourceTree = "<group>"; };
@@ -78,6 +82,10 @@
 		21B4130F2BCB49FB00730295 /* SearchResultCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultCellViewModel.swift; sourceTree = "<group>"; };
 		21BD1A582BCC13C7004B5F2C /* FiltersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FiltersViewModel.swift; sourceTree = "<group>"; };
 		21BD1A5A2BCC2128004B5F2C /* Array+asString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+asString.swift"; sourceTree = "<group>"; };
+		21BD1A602BCC37BD004B5F2C /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		21BD1A622BCC39CC004B5F2C /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
+		21E069552BCC61F70005B285 /* ArtistLookupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistLookupRequest.swift; sourceTree = "<group>"; };
+		21E069572BCC62040005B285 /* ArtistLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistLookupResponse.swift; sourceTree = "<group>"; };
 		21FC75E92BC0A2560096989A /* iTunesSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTunesSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21FC75EC2BC0A2560096989A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		21FC75EE2BC0A2560096989A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -161,9 +169,10 @@
 		21B412FD2BCB1AB100730295 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				21B412FE2BCB1AEB00730295 /* MediaService.swift */,
+				21B412FE2BCB1AEB00730295 /* ItunesService.swift */,
 				21B413092BCB2E9C00730295 /* MediaRequest */,
 				21B4130A2BCB2EA600730295 /* MediaImageRequest */,
+				21E069542BCC61D70005B285 /* ArtistLookupRequest */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -207,6 +216,24 @@
 			path = SearchResultCollectionView;
 			sourceTree = "<group>";
 		};
+		21BD1A5F2BCC37AC004B5F2C /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				21BD1A602BCC37BD004B5F2C /* DetailViewController.swift */,
+				21BD1A622BCC39CC004B5F2C /* DetailViewModel.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		21E069542BCC61D70005B285 /* ArtistLookupRequest */ = {
+			isa = PBXGroup;
+			children = (
+				21E069552BCC61F70005B285 /* ArtistLookupRequest.swift */,
+				21E069572BCC62040005B285 /* ArtistLookupResponse.swift */,
+			);
+			path = ArtistLookupRequest;
+			sourceTree = "<group>";
+		};
 		21FC75E02BC0A2560096989A = {
 			isa = PBXGroup;
 			children = (
@@ -231,6 +258,7 @@
 				21FC76012BC0A4900096989A /* App */,
 				219031E32BC6D2C2001D141E /* Main */,
 				21B412E52BCB03F000730295 /* Filters */,
+				21BD1A5F2BCC37AC004B5F2C /* Detail */,
 				21FC76032BC0A5800096989A /* Models */,
 				21FC760C2BC1D2340096989A /* Extensions */,
 				21FC76022BC0A4A50096989A /* SupportingFiles */,
@@ -378,7 +406,7 @@
 				21FC75F12BC0A2560096989A /* MainViewController.swift in Sources */,
 				21B412F82BCB071F00730295 /* CachePolicy.swift in Sources */,
 				21FC76072BC0B77F0096989A /* SearchResultsCollectionView.swift in Sources */,
-				21B412FF2BCB1AEB00730295 /* MediaService.swift in Sources */,
+				21B412FF2BCB1AEB00730295 /* ItunesService.swift in Sources */,
 				21B412EE2BCB070600730295 /* ImageNetworkResponseConverter.swift in Sources */,
 				21B412F02BCB070600730295 /* NetworkResponseConverterOf.swift in Sources */,
 				21FC76102BC1D2640096989A /* UIImage+systemImageWithColor.swift in Sources */,
@@ -386,6 +414,7 @@
 				211775B62BC922F8004B6E23 /* Entity.swift in Sources */,
 				21BD1A5B2BCC2128004B5F2C /* Array+asString.swift in Sources */,
 				21B413072BCB1D5100730295 /* MediaImageResponse.swift in Sources */,
+				21E069562BCC61F70005B285 /* ArtistLookupRequest.swift in Sources */,
 				21B412ED2BCB070600730295 /* NetworkResponseConverter.swift in Sources */,
 				211775B22BC857E6004B6E23 /* OptionsTableViewCell.swift in Sources */,
 				21FC75ED2BC0A2560096989A /* AppDelegate.swift in Sources */,
@@ -394,6 +423,7 @@
 				211775B82BC92319004B6E23 /* Country.swift in Sources */,
 				21B412F72BCB071F00730295 /* RequestBuilder.swift in Sources */,
 				219031E22BC6BABC001D141E /* SearchSuggestionsTableView.swift in Sources */,
+				21BD1A632BCC39CC004B5F2C /* DetailViewModel.swift in Sources */,
 				211775B02BC84F41004B6E23 /* ApplyFiltersButton.swift in Sources */,
 				21FC760B2BC1CB3F0096989A /* SearchTextField.swift in Sources */,
 				21B412F92BCB071F00730295 /* NetworkClient.swift in Sources */,
@@ -401,10 +431,12 @@
 				21B4130C2BCB300900730295 /* MainViewModel.swift in Sources */,
 				21FC76092BC0B9650096989A /* SearchResultCell.swift in Sources */,
 				21B412FB2BCB071F00730295 /* HttpMethod.swift in Sources */,
+				21BD1A612BCC37BD004B5F2C /* DetailViewController.swift in Sources */,
 				211775BA2BC92336004B6E23 /* Filters.swift in Sources */,
 				21B413012BCB1B4700730295 /* MediaRequest.swift in Sources */,
 				21B413032BCB1B5100730295 /* MediaResponse.swift in Sources */,
 				21B412FA2BCB071F00730295 /* NetworkRequest.swift in Sources */,
+				21E069582BCC62040005B285 /* ArtistLookupResponse.swift in Sources */,
 				21B413102BCB49FB00730295 /* SearchResultCellViewModel.swift in Sources */,
 				21B413052BCB1D4700730295 /* MediaImageRequest.swift in Sources */,
 				21BD1A592BCC13C7004B5F2C /* FiltersViewModel.swift in Sources */,

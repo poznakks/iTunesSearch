@@ -20,13 +20,13 @@ struct Media: Decodable {
     let artistId, collectionId, trackId: Int?
     let artistName, collectionName, trackName: String?
     let artistViewUrl, collectionViewUrl, trackViewUrl: URL?
+    let artistLinkUrl: URL?
     let previewUrl: String?
     let artworkUrl100: URL?
     let collectionPrice, trackPrice: Double?
-    let releaseDate: Date?
     let trackTimeMillis: Int?
-    let collectionExplicitness, trackExplicitness: String?
     let country, currency, primaryGenreName: String?
+    let longDescription: String?
 
     var trackDurationString: String? {
         guard let trackTimeMillis else { return nil }

@@ -22,6 +22,7 @@ struct MediaRequest: NetworkRequest {
         let explicit = filters.includeExplicit ? "Yes" : "No"
         let country = filters.country.rawValue
         let limit = String(filters.limit)
+        let query = query.split(separator: " ").joined(separator: "+")
         let queryItems: [URLQueryItem] = [
             URLQueryItem(name: "term", value: query),
             URLQueryItem(name: "entity", value: entity),
