@@ -30,6 +30,7 @@ final class MainViewModel: ObservableObject {
 
     @Published private(set) var suggestions: [String] = []
     @Published private(set) var mediaResults: [Media] = []
+    @Published private(set) var screenState: ScreenState = .content
 
     private var previousRequests: [String] = []
 
@@ -40,21 +41,27 @@ final class MainViewModel: ObservableObject {
     }
 
     func getLastRequests() {
+        screenState = .content
         suggestions = previousRequests.reversed()
     }
 
     private func performSearch() {
         Task {
             do {
+                screenState = .downloading
                 let receivedMedia = try await service.media(query: query, filters: filters)
+                screenState = .content
                 mediaResults = receivedMedia.results
+            } catch let error as NetworkError {
+                screenState = .error(message: error.rawValue)
             } catch {
-                print(error)
+                screenState = .error(message: "Something went wrong")
             }
         }
     }
 
     private func searchAmongPreviousRequests() {
+        screenState = .content
         let previousRequests = previousRequests
             .filter { $0.range(of: intermediateQuery, options: .caseInsensitive) != nil }
             .reversed()

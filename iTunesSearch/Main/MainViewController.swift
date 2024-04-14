@@ -13,6 +13,23 @@ final class MainViewController: UIViewController {
     private let viewModel = MainViewModel()
     private var cancellables: Set<AnyCancellable> = []
 
+    private lazy var activityIndicator: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView()
+        indicator.style = .large
+        indicator.hidesWhenStopped = true
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+        return indicator
+    }()
+
+    private lazy var errorLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
     private lazy var searchTextField = SearchTextField()
     private lazy var searchSuggestionsTableView = SearchSuggestionsTableView()
     private lazy var searchResultsCollectionView = SearchResultsCollectionView()
@@ -49,6 +66,7 @@ final class MainViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] suggestions in
                 self?.searchSuggestionsTableView.setResults(suggestions)
+                self?.searchSuggestionsTableView.isHidden = false
             }
             .store(in: &cancellables)
 
@@ -56,8 +74,39 @@ final class MainViewController: UIViewController {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] media in
                 self?.searchResultsCollectionView.setMedia(media)
+                self?.searchSuggestionsTableView.isHidden = true
+                self?.searchResultsCollectionView.isHidden = false
             }
             .store(in: &cancellables)
+
+        viewModel.$screenState
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.handleState()
+            }
+            .store(in: &cancellables)
+    }
+
+    private func handleState() {
+        switch viewModel.screenState {
+        case .downloading:
+            activityIndicator.startAnimating()
+            searchResultsCollectionView.isHidden = true
+            searchSuggestionsTableView.isHidden = true
+            errorLabel.isHidden = true
+
+        case .error(let message):
+            activityIndicator.stopAnimating()
+            searchResultsCollectionView.isHidden = true
+            searchSuggestionsTableView.isHidden = true
+            errorLabel.isHidden = false
+            errorLabel.text = message
+
+        case .content:
+            activityIndicator.stopAnimating()
+            errorLabel.isHidden = true
+            searchResultsCollectionView.isHidden = false
+        }
     }
 
     private func setupConstraints() {
@@ -84,23 +133,32 @@ final class MainViewController: UIViewController {
             searchSuggestionsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             searchSuggestionsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+
+        view.addSubview(activityIndicator)
+        NSLayoutConstraint.activate([
+            activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+
+        view.addSubview(errorLabel)
+        NSLayoutConstraint.activate([
+            errorLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            errorLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
 }
 
 extension MainViewController: SearchTextFieldDelegate {
     func onStartEditing() {
         viewModel.getLastRequests()
-        searchSuggestionsTableView.isHidden = false
     }
 
     func onTextUpdate(_ text: String) {
         viewModel.intermediateQuery = text
-        searchSuggestionsTableView.isHidden = false
     }
 
     func onReturn(_ text: String) {
         viewModel.query = text
-        searchSuggestionsTableView.isHidden = true
     }
 
     func onShowFilters() {
@@ -108,7 +166,6 @@ extension MainViewController: SearchTextFieldDelegate {
         let filtersViewController = FiltersViewController(viewModel: filtersViewModel)
         filtersViewController.didSetFilters = { [weak self] filters in
             self?.viewModel.filters = filters
-            self?.searchSuggestionsTableView.isHidden = true
         }
         present(filtersViewController, animated: true)
     }

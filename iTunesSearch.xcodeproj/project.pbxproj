@@ -40,6 +40,7 @@
 		21BD1A632BCC39CC004B5F2C /* DetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21BD1A622BCC39CC004B5F2C /* DetailViewModel.swift */; };
 		21E069562BCC61F70005B285 /* ArtistLookupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E069552BCC61F70005B285 /* ArtistLookupRequest.swift */; };
 		21E069582BCC62040005B285 /* ArtistLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E069572BCC62040005B285 /* ArtistLookupResponse.swift */; };
+		21E0695A2BCC7A360005B285 /* ScreenState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E069592BCC7A360005B285 /* ScreenState.swift */; };
 		21FC75ED2BC0A2560096989A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75EC2BC0A2560096989A /* AppDelegate.swift */; };
 		21FC75EF2BC0A2560096989A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75EE2BC0A2560096989A /* SceneDelegate.swift */; };
 		21FC75F12BC0A2560096989A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75F02BC0A2560096989A /* MainViewController.swift */; };
@@ -86,6 +87,7 @@
 		21BD1A622BCC39CC004B5F2C /* DetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewModel.swift; sourceTree = "<group>"; };
 		21E069552BCC61F70005B285 /* ArtistLookupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistLookupRequest.swift; sourceTree = "<group>"; };
 		21E069572BCC62040005B285 /* ArtistLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistLookupResponse.swift; sourceTree = "<group>"; };
+		21E069592BCC7A360005B285 /* ScreenState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenState.swift; sourceTree = "<group>"; };
 		21FC75E92BC0A2560096989A /* iTunesSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTunesSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21FC75EC2BC0A2560096989A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		21FC75EE2BC0A2560096989A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -253,12 +255,12 @@
 		21FC75EB2BC0A2560096989A /* iTunesSearch */ = {
 			isa = PBXGroup;
 			children = (
-				21B412FD2BCB1AB100730295 /* Services */,
-				21B412E72BCB069A00730295 /* Networking */,
 				21FC76012BC0A4900096989A /* App */,
 				219031E32BC6D2C2001D141E /* Main */,
 				21B412E52BCB03F000730295 /* Filters */,
 				21BD1A5F2BCC37AC004B5F2C /* Detail */,
+				21B412FD2BCB1AB100730295 /* Services */,
+				21B412E72BCB069A00730295 /* Networking */,
 				21FC76032BC0A5800096989A /* Models */,
 				21FC760C2BC1D2340096989A /* Extensions */,
 				21FC76022BC0A4A50096989A /* SupportingFiles */,
@@ -271,6 +273,7 @@
 			children = (
 				21FC75EE2BC0A2560096989A /* SceneDelegate.swift */,
 				21FC75EC2BC0A2560096989A /* AppDelegate.swift */,
+				21E069592BCC7A360005B285 /* ScreenState.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -431,6 +434,7 @@
 				21B4130C2BCB300900730295 /* MainViewModel.swift in Sources */,
 				21FC76092BC0B9650096989A /* SearchResultCell.swift in Sources */,
 				21B412FB2BCB071F00730295 /* HttpMethod.swift in Sources */,
+				21E0695A2BCC7A360005B285 /* ScreenState.swift in Sources */,
 				21BD1A612BCC37BD004B5F2C /* DetailViewController.swift in Sources */,
 				211775BA2BC92336004B6E23 /* Filters.swift in Sources */,
 				21B413012BCB1B4700730295 /* MediaRequest.swift in Sources */,

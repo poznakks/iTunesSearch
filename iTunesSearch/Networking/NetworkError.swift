@@ -7,11 +7,11 @@
 
 import Foundation
 
-enum NetworkError: Error {
-    case cantBuildUrlFromRequest
-    case badResponse
-    case noInternetConnection
-    case parsingFailure
-    case timeout
-    case networkError
+enum NetworkError: String, Error {
+    case cantBuildUrlFromRequest = "Incorrect URL"
+    case badResponse = "Bad response"
+    case noInternetConnection = "No internet connection"
+    case parsingFailure = "Parsing failure"
+    case timeout = "Connection timed out"
+    case networkError = "Something went wrong"
 }
