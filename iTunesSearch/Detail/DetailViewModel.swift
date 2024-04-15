@@ -33,9 +33,12 @@ final class DetailViewModel: ObservableObject {
                     screenState = .content
                     return
                 }
+                guard !Task.isCancelled else { return }
                 let image = try await service
                     .mediaImage(imageURL: artwork)
                     .preparingForDisplay()
+
+                guard !Task.isCancelled else { return }
                 self.image = image
                 screenState = .content
             } catch let error as NetworkError {
@@ -54,11 +57,15 @@ final class DetailViewModel: ObservableObject {
                     screenState = .content
                     return
                 }
+
+                guard !Task.isCancelled else { return }
                 let artistResponse = try await service.artistLookup(artistId: artistId)
                 guard let artistInfo = artistResponse.results.first else {
                     screenState = .content
                     return
                 }
+
+                guard !Task.isCancelled else { return }
                 self.artistInfo = artistInfo
                 screenState = .content
             } catch let error as NetworkError {
