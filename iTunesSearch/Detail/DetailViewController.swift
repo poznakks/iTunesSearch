@@ -10,9 +10,15 @@ import Combine
 
 final class DetailViewController: UIViewController {
 
+    // MARK: - Properties
     private let viewModel: DetailViewModel
     private var cancellables: Set<AnyCancellable> = []
 
+    private lazy var height = otherWorksCollectionView.heightAnchor.constraint(
+        equalToConstant: 0
+    )
+
+    // MARK: - UI Elements
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -164,6 +170,35 @@ final class DetailViewController: UIViewController {
         return button
     }()
 
+    private lazy var additionalInfoLabel: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        label.text = "Additional info"
+        label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(label)
+        return label
+    }()
+
+    private lazy var otherWorksButton: UIButton = {
+        var config = UIButton.Configuration.plain()
+        config.baseForegroundColor = .systemBlue
+        config.title = "Show last 5 artist's works"
+        let button = UIButton(configuration: config)
+        button.addTarget(self, action: #selector(didTapOtherWorks), for: .touchUpInside)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(button)
+        return button
+    }()
+
+    private lazy var otherWorksCollectionView: SearchResultsCollectionView = {
+        let collectionView = SearchResultsCollectionView(scrollDirection: .horizontal)
+        contentView.addSubview(collectionView)
+        return collectionView
+    }()
+
+    // MARK: - Lifecycle
     init(viewModel: DetailViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -180,14 +215,43 @@ final class DetailViewController: UIViewController {
         subscribeOnViewModel()
         configure()
         setupConstraints()
+
+        otherWorksCollectionView.onCellTapHandler = { [weak self] media in
+            guard let self else { return }
+            let viewModel = DetailViewModel(media: media)
+            let detailVC = DetailViewController(viewModel: viewModel)
+            self.navigationController?.pushViewController(detailVC, animated: true)
+        }
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         viewModel.cancelNetworkRequests()
     }
+}
 
-    private func subscribeOnViewModel() {
+// MARK: - Actions
+private extension DetailViewController {
+    @objc
+    func didTapLink() {
+        viewModel.openItunesPage()
+    }
+
+    @objc
+    func didTapArtistLink() {
+        viewModel.openArtistPage()
+    }
+
+    @objc
+    func didTapOtherWorks() {
+        guard viewModel.otherWorks == nil else { return }
+        viewModel.getOtherWorks()
+    }
+}
+
+// MARK: - ViewModel Subscription
+private extension DetailViewController {
+    func subscribeOnViewModel() {
         viewModel.$image
             .receive(on: DispatchQueue.main)
             .sink { [weak self] image in
@@ -197,18 +261,15 @@ final class DetailViewController: UIViewController {
 
         viewModel.$artistInfo
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] info in
-                guard let self,
-                      let info,
-                      viewModel.media.wrapperType != .artist
-                else { return }
+            .sink { [weak self] _ in
+                self?.setArtistInfo()
+            }
+            .store(in: &cancellables)
 
-                self.aboutArtistLabel.isHidden = false
-                self.artistNameLabel.text = "Name: " + info.artistName
-                self.aboutArtistButton.isHidden = false
-
-                guard let genre = info.primaryGenreName else { return }
-                self.artistPrimaryGenreLabel.text = "Primary genre: " + genre
+        viewModel.$otherWorks
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.setLastFiveWorks()
             }
             .store(in: &cancellables)
 
@@ -220,7 +281,30 @@ final class DetailViewController: UIViewController {
             .store(in: &cancellables)
     }
 
-    private func handleState() {
+    func setArtistInfo() {
+        guard let info = viewModel.artistInfo,
+              viewModel.media.wrapperType != .artist
+        else { return }
+
+        aboutArtistLabel.isHidden = false
+        artistNameLabel.text = "Name: " + info.artistName
+        aboutArtistButton.isHidden = false
+
+        guard let genre = info.primaryGenreName else { return }
+        artistPrimaryGenreLabel.text = "Primary genre: " + genre
+    }
+
+    func setLastFiveWorks() {
+        guard let media = viewModel.otherWorks else { return }
+        otherWorksCollectionView.setMedia(media)
+        UIView.animate(withDuration: 0.75, animations: {
+            self.height.constant = 300
+            self.scrollView.contentOffset.y += 300
+            self.view.layoutIfNeeded()
+        })
+    }
+
+    func handleState() {
         switch viewModel.screenState {
         case .downloading:
             activityIndicator.startAnimating()
@@ -239,8 +323,11 @@ final class DetailViewController: UIViewController {
             contentView.isHidden = false
         }
     }
+}
 
-    private func configure() {
+// MARK: - Configure content
+private extension DetailViewController {
+    func configure() {
         viewModel.getImage()
         viewModel.getArtistInfo()
 
@@ -256,7 +343,7 @@ final class DetailViewController: UIViewController {
         }
     }
 
-    private func configureForTrack() {
+    func configureForTrack() {
         let media = viewModel.media
         titleLabel.text = media.trackName
         typeLabel.text = media.kind?.toString
@@ -278,7 +365,7 @@ final class DetailViewController: UIViewController {
         }
     }
 
-    private func configureForCollection() {
+    func configureForCollection() {
         let media = viewModel.media
         titleLabel.text = media.collectionName
         typeLabel.text = media.collectionType
@@ -288,7 +375,7 @@ final class DetailViewController: UIViewController {
         }
     }
 
-    private func configureForArtist() {
+    func configureForArtist() {
         let media = viewModel.media
         titleLabel.text = media.artistName
         typeLabel.text = media.primaryGenreName
@@ -297,8 +384,12 @@ final class DetailViewController: UIViewController {
             linkButton.isHidden = false
         }
     }
+}
 
-    private func setupConstraints() {
+// MARK: - Layout
+// swiftlint:disable all
+private extension DetailViewController {
+    func setupConstraints() {
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -355,7 +446,32 @@ final class DetailViewController: UIViewController {
             aboutArtistButton.topAnchor.constraint(equalTo: artistPrimaryGenreLabel.bottomAnchor, constant: 10),
             aboutArtistButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             aboutArtistButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            aboutArtistButton.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+
+            additionalInfoLabel.topAnchor.constraint(equalTo: aboutArtistButton.bottomAnchor, constant: 10),
+            additionalInfoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            additionalInfoLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+            otherWorksButton.topAnchor.constraint(equalTo: additionalInfoLabel.bottomAnchor, constant: 10),
+            otherWorksButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            otherWorksButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+            otherWorksCollectionView.topAnchor.constraint(
+                equalTo: otherWorksButton.bottomAnchor,
+                constant: 10
+            ),
+            otherWorksCollectionView.leadingAnchor.constraint(
+                equalTo: contentView.leadingAnchor,
+                constant: 16
+            ),
+            otherWorksCollectionView.trailingAnchor.constraint(
+                equalTo: contentView.trailingAnchor,
+                constant: -16
+            ),
+            otherWorksCollectionView.bottomAnchor.constraint(
+                equalTo: contentView.bottomAnchor,
+                constant: -30
+            ),
+            height,
 
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -364,14 +480,5 @@ final class DetailViewController: UIViewController {
             errorLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
     }
-
-    @objc
-    private func didTapLink() {
-        viewModel.openItunesPage()
-    }
-
-    @objc
-    private func didTapArtistLink() {
-        viewModel.openArtistPage()
-    }
 }
+// swiftlint:enable all

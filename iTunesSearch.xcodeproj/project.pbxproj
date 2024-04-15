@@ -41,6 +41,8 @@
 		21E069562BCC61F70005B285 /* ArtistLookupRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E069552BCC61F70005B285 /* ArtistLookupRequest.swift */; };
 		21E069582BCC62040005B285 /* ArtistLookupResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E069572BCC62040005B285 /* ArtistLookupResponse.swift */; };
 		21E0695A2BCC7A360005B285 /* ScreenState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E069592BCC7A360005B285 /* ScreenState.swift */; };
+		21E0695D2BCD9D580005B285 /* ArtistOtherWorksRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E0695C2BCD9D580005B285 /* ArtistOtherWorksRequest.swift */; };
+		21E069612BCD9F3D0005B285 /* ArtistOtherWorksResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21E069602BCD9F3D0005B285 /* ArtistOtherWorksResponse.swift */; };
 		21FC75ED2BC0A2560096989A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75EC2BC0A2560096989A /* AppDelegate.swift */; };
 		21FC75EF2BC0A2560096989A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75EE2BC0A2560096989A /* SceneDelegate.swift */; };
 		21FC75F12BC0A2560096989A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FC75F02BC0A2560096989A /* MainViewController.swift */; };
@@ -88,6 +90,8 @@
 		21E069552BCC61F70005B285 /* ArtistLookupRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistLookupRequest.swift; sourceTree = "<group>"; };
 		21E069572BCC62040005B285 /* ArtistLookupResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistLookupResponse.swift; sourceTree = "<group>"; };
 		21E069592BCC7A360005B285 /* ScreenState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenState.swift; sourceTree = "<group>"; };
+		21E0695C2BCD9D580005B285 /* ArtistOtherWorksRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistOtherWorksRequest.swift; sourceTree = "<group>"; };
+		21E069602BCD9F3D0005B285 /* ArtistOtherWorksResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArtistOtherWorksResponse.swift; sourceTree = "<group>"; };
 		21FC75E92BC0A2560096989A /* iTunesSearch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTunesSearch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21FC75EC2BC0A2560096989A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		21FC75EE2BC0A2560096989A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -175,6 +179,7 @@
 				21B413092BCB2E9C00730295 /* MediaRequest */,
 				21B4130A2BCB2EA600730295 /* MediaImageRequest */,
 				21E069542BCC61D70005B285 /* ArtistLookupRequest */,
+				21E0695B2BCD9D190005B285 /* ArtistOtherWorksRequest */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -234,6 +239,15 @@
 				21E069572BCC62040005B285 /* ArtistLookupResponse.swift */,
 			);
 			path = ArtistLookupRequest;
+			sourceTree = "<group>";
+		};
+		21E0695B2BCD9D190005B285 /* ArtistOtherWorksRequest */ = {
+			isa = PBXGroup;
+			children = (
+				21E0695C2BCD9D580005B285 /* ArtistOtherWorksRequest.swift */,
+				21E069602BCD9F3D0005B285 /* ArtistOtherWorksResponse.swift */,
+			);
+			path = ArtistOtherWorksRequest;
 			sourceTree = "<group>";
 		};
 		21FC75E02BC0A2560096989A = {
@@ -414,6 +428,7 @@
 				21B412F02BCB070600730295 /* NetworkResponseConverterOf.swift in Sources */,
 				21FC76102BC1D2640096989A /* UIImage+systemImageWithColor.swift in Sources */,
 				21FC760E2BC1D24B0096989A /* UIFont+systemFontWithDesign.swift in Sources */,
+				21E0695D2BCD9D580005B285 /* ArtistOtherWorksRequest.swift in Sources */,
 				211775B62BC922F8004B6E23 /* Entity.swift in Sources */,
 				21BD1A5B2BCC2128004B5F2C /* Array+asString.swift in Sources */,
 				21B413072BCB1D5100730295 /* MediaImageResponse.swift in Sources */,
@@ -428,6 +443,7 @@
 				219031E22BC6BABC001D141E /* SearchSuggestionsTableView.swift in Sources */,
 				21BD1A632BCC39CC004B5F2C /* DetailViewModel.swift in Sources */,
 				211775B02BC84F41004B6E23 /* ApplyFiltersButton.swift in Sources */,
+				21E069612BCD9F3D0005B285 /* ArtistOtherWorksResponse.swift in Sources */,
 				21FC760B2BC1CB3F0096989A /* SearchTextField.swift in Sources */,
 				21B412F92BCB071F00730295 /* NetworkClient.swift in Sources */,
 				211775B42BC85962004B6E23 /* MultiOptionViewController.swift in Sources */,

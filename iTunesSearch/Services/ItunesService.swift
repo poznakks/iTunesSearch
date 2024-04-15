@@ -11,6 +11,7 @@ protocol ItunesService: AnyObject, Sendable {
     func media(query: String, filters: Filters) async throws -> MediaResponse
     func mediaImage(imageURL: URL) async throws -> MediaImageResponse
     func artistLookup(artistId: Int) async throws -> ArtistLookupResponse
+    func artistOtherWorks(artistId: Int) async throws -> ArtistOtherWorksResponse
 }
 
 final class ItunesServiceImpl: ItunesService {
@@ -22,17 +23,22 @@ final class ItunesServiceImpl: ItunesService {
     }
 
     func media(query: String, filters: Filters) async throws -> MediaResponse {
-        let mediaRequest = MediaRequest(query: query, filters: filters)
-        return try await networkClient.send(request: mediaRequest)
+        let request = MediaRequest(query: query, filters: filters)
+        return try await networkClient.send(request: request)
     }
 
     func mediaImage(imageURL: URL) async throws -> MediaImageResponse {
-        let imageRequest = MediaImageRequest(imageURL: imageURL)
-        return try await networkClient.send(request: imageRequest)
+        let request = MediaImageRequest(imageURL: imageURL)
+        return try await networkClient.send(request: request)
     }
 
     func artistLookup(artistId: Int) async throws -> ArtistLookupResponse {
-        let lookupRequest = ArtistLookupRequest(id: artistId)
-        return try await networkClient.send(request: lookupRequest)
+        let request = ArtistLookupRequest(id: artistId)
+        return try await networkClient.send(request: request)
+    }
+
+    func artistOtherWorks(artistId: Int) async throws -> ArtistOtherWorksResponse {
+        let request = ArtistOtherWorksRequest(id: artistId)
+        return try await networkClient.send(request: request)
     }
 }

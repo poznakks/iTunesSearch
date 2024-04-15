@@ -14,11 +14,13 @@ final class DetailViewModel: ObservableObject {
 
     @Published private(set) var image: UIImage?
     @Published private(set) var artistInfo: ArtistInfo?
+    @Published private(set) var otherWorks: [Media]?
     @Published private(set) var screenState: ScreenState = .downloading
 
     private let service: ItunesService
     private var imageTask: Task<Void, Never>?
     private var artistTask: Task<Void, Never>?
+    private var otherWorksTask: Task<Void, Never>?
 
     init(media: Media, service: ItunesService = ItunesServiceImpl()) {
         self.media = media
@@ -44,7 +46,7 @@ final class DetailViewModel: ObservableObject {
             } catch let error as NetworkError {
                 screenState = .error(message: error.rawValue)
             } catch {
-                screenState = .error(message: "Something went wrong")
+                screenState = .error(message: "Cannot fetch image")
             }
         }
     }
@@ -71,7 +73,22 @@ final class DetailViewModel: ObservableObject {
             } catch let error as NetworkError {
                 screenState = .error(message: error.rawValue)
             } catch {
-                screenState = .error(message: "Something went wrong")
+                screenState = .error(message: "Cannot fetch artist info")
+            }
+        }
+    }
+
+    func getOtherWorks() {
+        otherWorksTask = Task {
+            do {
+                guard let artistId = media.artistId else { return }
+                let worksResponse = try await service.artistOtherWorks(artistId: artistId)
+                let works = worksResponse.results.dropFirst() // first is artist info
+                self.otherWorks = Array(works)
+            } catch let error as NetworkError {
+                screenState = .error(message: error.rawValue)
+            } catch {
+                screenState = .error(message: "Cannot fetch last 5 works")
             }
         }
     }
@@ -79,6 +96,7 @@ final class DetailViewModel: ObservableObject {
     func cancelNetworkRequests() {
         imageTask?.cancel()
         artistTask?.cancel()
+        otherWorksTask?.cancel()
     }
 
     func openItunesPage() {

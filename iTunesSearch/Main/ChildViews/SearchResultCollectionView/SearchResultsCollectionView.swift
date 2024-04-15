@@ -13,9 +13,9 @@ final class SearchResultsCollectionView: UICollectionView {
 
     private var media: [Media] = []
 
-    init() {
+    init(scrollDirection: UICollectionView.ScrollDirection = .vertical) {
         let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .vertical
+        layout.scrollDirection = scrollDirection
         super.init(frame: .zero, collectionViewLayout: layout)
         setup()
     }
