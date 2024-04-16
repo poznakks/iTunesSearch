@@ -118,10 +118,8 @@ private enum Constants {
     leftRightViewPadding + leftRightViewSymbolImageViewWidth
     static let leftSymbolScale: CGFloat = 1.25
 
-    // swiftlint:disable force_unwrapping
-    static let glass = UIImage.systemImageWithColor(name: "magnifyingglass", color: .lightGray)!
-    static let filter = UIImage.systemImageWithColor(name: "slider.horizontal.3", color: .black)!
-    // swiftlint:enable force_unwrapping
+    static let glass = UIImage.systemImageWithColor(name: "magnifyingglass", color: .lightGray) ?? UIImage()
+    static let filter = UIImage.systemImageWithColor(name: "slider.horizontal.3", color: .black) ?? UIImage()
 }
 
 private enum ViewPosition {
