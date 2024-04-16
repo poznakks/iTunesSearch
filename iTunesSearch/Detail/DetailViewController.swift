@@ -14,10 +14,6 @@ final class DetailViewController: UIViewController {
     private let viewModel: DetailViewModel
     private var cancellables: Set<AnyCancellable> = []
 
-    private lazy var height = otherWorksCollectionView.heightAnchor.constraint(
-        equalToConstant: 0
-    )
-
     // MARK: - UI Elements
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -93,8 +89,8 @@ final class DetailViewController: UIViewController {
     }()
 
     private lazy var linkButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.baseForegroundColor = .systemBlue
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = .systemBlue
         config.title = "iTunes Page"
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapLink), for: .touchUpInside)
@@ -159,8 +155,8 @@ final class DetailViewController: UIViewController {
     }()
 
     private lazy var aboutArtistButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.baseForegroundColor = .systemBlue
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = .systemBlue
         config.title = "Artist iTunes page"
         let button = UIButton(configuration: config)
         button.addTarget(self, action: #selector(didTapArtistLink), for: .touchUpInside)
@@ -176,16 +172,28 @@ final class DetailViewController: UIViewController {
         label.numberOfLines = 0
         label.text = "Additional info"
         label.font = .systemFont(ofSize: 20, weight: .bold)
+        label.isHidden = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(label)
+        return label
+    }()
+
+    private lazy var additionalInfoText: UILabel = {
+        let label = UILabel()
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        label.font = .systemFont(ofSize: 18, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(label)
         return label
     }()
 
     private lazy var otherWorksButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.baseForegroundColor = .systemBlue
-        config.title = "Show last 5 artist's works"
+        var config = UIButton.Configuration.filled()
+        config.baseBackgroundColor = .systemBlue
+        config.title = "Show other artist's works"
         let button = UIButton(configuration: config)
+        button.isHidden = true
         button.addTarget(self, action: #selector(didTapOtherWorks), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         contentView.addSubview(button)
@@ -197,6 +205,11 @@ final class DetailViewController: UIViewController {
         contentView.addSubview(collectionView)
         return collectionView
     }()
+
+    // MARK: Collection view height
+    private lazy var otherWorksCollectionViewHeight = otherWorksCollectionView.heightAnchor.constraint(
+        equalToConstant: 0
+    )
 
     // MARK: - Lifecycle
     init(viewModel: DetailViewModel) {
@@ -244,7 +257,6 @@ private extension DetailViewController {
 
     @objc
     func didTapOtherWorks() {
-        guard viewModel.otherWorks == nil else { return }
         viewModel.getOtherWorks()
     }
 }
@@ -269,7 +281,7 @@ private extension DetailViewController {
         viewModel.$otherWorks
             .receive(on: DispatchQueue.main)
             .sink { [weak self] _ in
-                self?.setLastFiveWorks()
+                self?.setOtherWorks()
             }
             .store(in: &cancellables)
 
@@ -289,16 +301,17 @@ private extension DetailViewController {
         aboutArtistLabel.isHidden = false
         artistNameLabel.text = "Name: " + info.artistName
         aboutArtistButton.isHidden = false
+        otherWorksButton.isHidden = false
 
         guard let genre = info.primaryGenreName else { return }
         artistPrimaryGenreLabel.text = "Primary genre: " + genre
     }
 
-    func setLastFiveWorks() {
+    func setOtherWorks() {
         guard let media = viewModel.otherWorks else { return }
         otherWorksCollectionView.setMedia(media)
-        UIView.animate(withDuration: 0.75, animations: {
-            self.height.constant = 300
+        UIView.animate(withDuration: 0.5, animations: {
+            self.otherWorksCollectionViewHeight.constant = 300
             self.scrollView.contentOffset.y += 300
             self.view.layoutIfNeeded()
         })
@@ -363,6 +376,21 @@ private extension DetailViewController {
             descriptionLabel.isHidden = false
             descriptionText.text = description
         }
+
+        switch media.kind {
+        case .movie:
+            guard let rating = media.contentAdvisoryRating else { return }
+            additionalInfoLabel.isHidden = false
+            additionalInfoText.text = "Content Advisory Rating: " + rating
+
+        case .song:
+            guard let album = media.collectionName else { return }
+            additionalInfoLabel.isHidden = false
+            additionalInfoText.text = "Album: " + album
+
+        case .none:
+            break
+        }
     }
 
     func configureForCollection() {
@@ -387,7 +415,6 @@ private extension DetailViewController {
 }
 
 // MARK: - Layout
-// swiftlint:disable all
 private extension DetailViewController {
     func setupConstraints() {
         NSLayoutConstraint.activate([
@@ -451,7 +478,11 @@ private extension DetailViewController {
             additionalInfoLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             additionalInfoLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
-            otherWorksButton.topAnchor.constraint(equalTo: additionalInfoLabel.bottomAnchor, constant: 10),
+            additionalInfoText.topAnchor.constraint(equalTo: additionalInfoLabel.bottomAnchor, constant: 10),
+            additionalInfoText.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            additionalInfoText.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+
+            otherWorksButton.topAnchor.constraint(equalTo: additionalInfoText.bottomAnchor, constant: 10),
             otherWorksButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             otherWorksButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
 
@@ -471,7 +502,7 @@ private extension DetailViewController {
                 equalTo: contentView.bottomAnchor,
                 constant: -30
             ),
-            height,
+            otherWorksCollectionViewHeight,
 
             activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -481,4 +512,3 @@ private extension DetailViewController {
         ])
     }
 }
-// swiftlint:enable all

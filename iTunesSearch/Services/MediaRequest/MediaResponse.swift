@@ -27,6 +27,7 @@ struct Media: Decodable {
     let trackTimeMillis: Int?
     let country, currency, primaryGenreName: String?
     let longDescription: String?
+    let contentAdvisoryRating: String?
 
     var trackDurationString: String? {
         guard let trackTimeMillis else { return nil }

@@ -18,6 +18,7 @@ final class DetailViewModel: ObservableObject {
     @Published private(set) var screenState: ScreenState = .downloading
 
     private let service: ItunesService
+
     private var imageTask: Task<Void, Never>?
     private var artistTask: Task<Void, Never>?
     private var otherWorksTask: Task<Void, Never>?
@@ -79,11 +80,12 @@ final class DetailViewModel: ObservableObject {
     }
 
     func getOtherWorks() {
+        guard otherWorks == nil else { return }
         otherWorksTask = Task {
             do {
                 guard let artistId = media.artistId else { return }
                 let worksResponse = try await service.artistOtherWorks(artistId: artistId)
-                let works = worksResponse.results.dropFirst() // first is artist info
+                let works = worksResponse.results.dropFirst() // first is artist info which we do not need
                 self.otherWorks = Array(works)
             } catch let error as NetworkError {
                 screenState = .error(message: error.rawValue)
