@@ -10,8 +10,12 @@ import Foundation
 struct ArtistLookupRequest: NetworkRequest {
     typealias Response = ArtistLookupResponse
 
-    // swiftlint:disable:next force_unwrapping
-    let baseURL = URL(string: "https://itunes.apple.com")!
+    var baseURL: URL {
+        guard let urlString = Bundle.main.object(forInfoDictionaryKey: "BASE_URL") as? String,
+              let url = URL(string: urlString)
+        else { fatalError("Can't find base URL in info.plist") }
+        return url
+    }
     let path: String = "/lookup"
     let httpMethod: HttpMethod = .GET
     let queryItems: [URLQueryItem]
