@@ -8,7 +8,6 @@
 import Foundation
 
 enum NetworkError: String, Error {
-    case cantBuildUrlFromRequest = "Incorrect URL"
     case badResponse = "Bad response"
     case noInternetConnection = "No internet connection"
     case parsingFailure = "Parsing failure"

@@ -1,0 +1,28 @@
+{
+    "resultCount": 1,
+    "results": [
+        {
+            "wrapperType": "collection",
+            "collectionType": "Album",
+            "artistId": 29254083,
+            "collectionId": 1273787064,
+            "amgArtistId": 2273752,
+            "artistName": "Miguel",
+            "collectionName": "Sky Walker (feat. Travis Scott) - Single",
+            "collectionCensoredName": "Sky Walker (feat. Travis Scott) - Single",
+            "artistViewUrl": "https://music.apple.com/us/artist/miguel/29254083?uo=4",
+            "collectionViewUrl": "https://music.apple.com/us/album/sky-walker-feat-travis-scott-single/1273787064?uo=4",
+            "artworkUrl60": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/ae/4a/6e/ae4a6e8b-d8df-7f06-db7b-3e923ba51756/886446674513.jpg/60x60bb.jpg",
+            "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/ae/4a/6e/ae4a6e8b-d8df-7f06-db7b-3e923ba51756/886446674513.jpg/100x100bb.jpg",
+            "collectionPrice": 1.29,
+            "collectionExplicitness": "explicit",
+            "contentAdvisoryRating": "Explicit",
+            "trackCount": 1,
+            "copyright": "℗ 2017 ByStorm Entertainment and RCA Records, a division of Sony Music Entertainment",
+            "country": "USA",
+            "currency": "USD",
+            "releaseDate": "2017-08-25T07:00:00Z",
+            "primaryGenreName": "R&B/Soul"
+        }
+    ]
+}

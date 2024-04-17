@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Media: Decodable {
+struct Media: Decodable, Equatable {
     let wrapperType: WrapperType
     let kind: Kind?
     let collectionType: String?
@@ -16,7 +16,6 @@ struct Media: Decodable {
     let artistName, collectionName, trackName: String?
     let artistViewUrl, collectionViewUrl, trackViewUrl: URL?
     let artistLinkUrl: URL?
-    let previewUrl: String?
     let artworkUrl100: URL?
     let collectionPrice, trackPrice: Double?
     let trackTimeMillis: Int?

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MediaResponse: Decodable {
+struct MediaResponse: Decodable, Equatable {
     let resultCount: Int
     let results: [Media]
 }

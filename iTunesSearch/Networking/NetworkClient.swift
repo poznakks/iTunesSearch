@@ -13,28 +13,28 @@ protocol NetworkClient: AnyObject, Sendable {
 
 final class NetworkClientImpl: NetworkClient {
 
-    // MARK: - Properties
-    private let urlSession = URLSession(configuration: .default)
-
     // MARK: - Dependencies
+    private let urlSession: URLSession
     private let inMemoryCache: URLCache
     private let requestBuilder: RequestBuilder
 
     // MARK: - Init
     init(
+        urlSession: URLSession = URLSession(configuration: .default),
         inMemoryCache: URLCache = URLCache(
             memoryCapacity: 100 * 1024 * 1024, // 100 MB
             diskCapacity: 0
         ),
         requestBuilder: RequestBuilder = RequestBuilderImpl()
     ) {
+        self.urlSession = urlSession
         self.inMemoryCache = inMemoryCache
         self.requestBuilder = requestBuilder
     }
 
     // MARK: - NetworkClient
     func send<Request: NetworkRequest>(request: Request) async throws -> Request.Response {
-        let urlRequest = try requestBuilder.build(request: request)
+        let urlRequest = requestBuilder.build(request: request)
         return try await send(
             urlRequest: urlRequest,
             cachePolicy: request.cachePolicy,

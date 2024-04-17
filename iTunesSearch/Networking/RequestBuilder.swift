@@ -8,19 +8,19 @@
 import Foundation
 
 protocol RequestBuilder: AnyObject, Sendable {
-    func build<Request: NetworkRequest>(request: Request) throws -> URLRequest
+    func build<Request: NetworkRequest>(request: Request) -> URLRequest
 }
 
 final class RequestBuilderImpl: RequestBuilder {
-    func build<Request: NetworkRequest>(request: Request) throws -> URLRequest {
+    func build<Request: NetworkRequest>(request: Request) -> URLRequest {
         let url = request.baseURL
             .appending(path: request.path)
             .appending(queryItems: request.queryItems)
 
-        var request = URLRequest(url: url)
-        request.httpMethod = request.httpMethod
-        request.timeoutInterval = request.timeoutInterval
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = request.httpMethod.rawValue
+        urlRequest.timeoutInterval = request.timeoutInterval
 
-        return request
+        return urlRequest
     }
 }

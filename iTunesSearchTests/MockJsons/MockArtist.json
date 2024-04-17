@@ -1,0 +1,15 @@
+{
+    "resultCount": 1,
+    "results": [
+        {
+            "wrapperType": "artist",
+            "artistType": "Artist",
+            "artistName": "Travis Scott",
+            "artistLinkUrl": "https://music.apple.com/us/artist/travis-scott/549236696?uo=4",
+            "artistId": 549236696,
+            "amgArtistId": 2701028,
+            "primaryGenreName": "Hip-Hop/Rap",
+            "primaryGenreId": 18
+        }
+    ]
+}

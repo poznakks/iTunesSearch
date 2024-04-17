@@ -1,0 +1,12 @@
+{
+    "resultCount": 2,
+    "results": [
+        {
+            "firstName": "Tim",
+            "secondName": "Cook"
+        },
+        {
+            "firstName": "Steve"
+        }
+    ]
+}
