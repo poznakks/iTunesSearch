@@ -11,9 +11,3 @@ struct ArtistLookupResponse: Decodable {
     let resultCount: Int
     let results: [ArtistInfo]
 }
-
-struct ArtistInfo: Decodable {
-    let artistName: String
-    let artistLinkUrl: URL
-    let primaryGenreName: String?
-}

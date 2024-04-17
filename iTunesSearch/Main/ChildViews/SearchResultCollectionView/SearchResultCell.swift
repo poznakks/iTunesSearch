@@ -142,6 +142,13 @@ final class SearchResultCell: UICollectionViewCell {
         titleLabel.text = media.collectionName
         artistLabel.text = media.artistName
         typeLabel.text = media.collectionType
+
+        if let trackPrice = media.collectionPrice,
+           let currency = media.currency {
+            priceLabel.text = "\(trackPrice) \(currency)"
+        } else {
+            priceLabel.text = "Price not specified"
+        }
     }
 
     private func configureForArtist() {
